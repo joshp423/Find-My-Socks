@@ -1,16 +1,10 @@
 import { Text } from '@react-navigation/elements';
-import { StaticScreenProps } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
-import { userStorage } from './Home';
 
-type Props = StaticScreenProps<{
-  user: string;
-}>;
-
-export function Profile({ route }: Props) {
+export function Storage() {
   return (
     <View style={styles.container}>
-      <Text>{route.params.user}'s Profile</Text>
+      <Text>Storage Screen Bre</Text>
     </View>
   );
 }
@@ -20,6 +14,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 10,
+  },
+  row: {
+    flexDirection: 'row',
     gap: 10,
   },
 });

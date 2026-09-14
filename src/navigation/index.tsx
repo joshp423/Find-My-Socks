@@ -16,6 +16,7 @@ import { NotFound } from './screens/NotFound';
 import { Profile } from './screens/Profile';
 import { Settings } from './screens/Settings';
 import { Updates } from './screens/Updates';
+import { Storage } from './screens/Storage';
 
 const HomeTabs = createBottomTabNavigator({
   screens: {
@@ -77,6 +78,18 @@ const RootStack = createNativeStackNavigator({
     Settings: createNativeStackScreen({
       screen: Settings,
       options: ({ navigation }) => ({
+        presentation: 'modal',
+        headerRight: () => (
+          <HeaderButton onPress={navigation.goBack}>
+            <Text>Close</Text>
+          </HeaderButton>
+        ),
+      }),
+    }),
+    Storage: createNativeStackScreen({
+      screen: Storage,
+      options: ({ navigation }) => ({
+        title: "Manage Storage",
         presentation: 'modal',
         headerRight: () => (
           <HeaderButton onPress={navigation.goBack}>
