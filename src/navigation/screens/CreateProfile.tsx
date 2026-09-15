@@ -1,9 +1,13 @@
 import { Text } from '@react-navigation/elements';
 import { useState } from 'react';
 import { StyleSheet, View, TextInput, Button } from 'react-native';
-import { userStorage } from './Home';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
-export function CreateProfile() {
+type CreateProfileProps = {
+  userStorage: AsyncStorage
+}
+
+export function CreateProfile({userStorage}: CreateProfileProps) {
   const [profileName, onChangeProfileName] = useState<string>("");
 
   return (

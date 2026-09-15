@@ -5,35 +5,42 @@ import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
-// create a storage instance
-export const userStorage = createAsyncStorage("appDB");
-
-//create db and table if not already
-const db = await SQLite.openDatabaseAsync('databaseName');
-
-await db.execAsync(`
-  CREATE TABLE IF NOT EXISTS userContainers (
-    id INTEGER PRIMARY KEY NOT NULL,
-    name STRING NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS userCompartments (
-    id INTEGER PRIMARY KEY NOT NULL,
-    parentID INTEGER NOT NULL,
-    name STRING NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS userItems (
-    id INTEGER PRIMARY KEY NOT NULL,
-    parentID INTEGER NOT NULL,
-    name STRING NOT NULL,
-    amount INTEGER (amount >= 0 AND amount <= 100) NOT NULL
-  );
-`);
-
-//   await userStorage.removeItem("userToken");
-
 export function Home() {
   const [userProfileCheck, setUserProfileCheck] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
+
+  // create a storage instance
+  const userStorage = createAsyncStorage("appDB");
+
+  useEffect(() => {
+
+    async function load(){
+      //create db and table if not already
+      const db = await SQLite.openDatabaseAsync('databaseName');
+
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS userContainers (
+          id INTEGER PRIMARY KEY NOT NULL,
+          name STRING NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS userCompartments (
+          id INTEGER PRIMARY KEY NOT NULL,
+          parentID INTEGER NOT NULL,
+          name STRING NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS userItems (
+          id INTEGER PRIMARY KEY NOT NULL,
+          parentID INTEGER NOT NULL,
+          name STRING NOT NULL,
+          amount INTEGER NOT NULL CHECK(amount >= 0 AND amount <= 100)
+        );
+      `);
+    };
+    load();
+
+  },[])
+
+//   await userStorage.removeItem("userToken");
 
   useEffect(() => {
     async function load() {
@@ -51,7 +58,7 @@ export function Home() {
 
   if (!userProfileCheck) {
     return (
-      <CreateProfile />
+      <CreateProfile userStorage={userStorage}/>
     )
   }
   return (
