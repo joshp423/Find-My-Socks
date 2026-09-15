@@ -18,7 +18,7 @@ export function CreateProfile({userStorage}: CreateProfileProps) {
         editable
         style={styles.input}
         maxLength={20}
-      ></TextInput>
+      />
       <Button 
         title='Submit'
         onPress={() => {

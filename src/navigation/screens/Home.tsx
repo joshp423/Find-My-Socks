@@ -1,5 +1,5 @@
-import { Button, Text } from '@react-navigation/elements';
-import { StyleSheet, View } from 'react-native';
+import { Button as NavButton, Text } from '@react-navigation/elements';
+import { StyleSheet, View, TextInput, Button } from 'react-native';
 import { CreateProfile } from './CreateProfile';
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as SQLite from 'expo-sqlite';
@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 export function Home() {
   const [userProfileCheck, setUserProfileCheck] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
+  const [searchTerms, onChangeSearchTerms] = useState<string>("");
+  const [confirmSearch, setConfirmSearch] = useState<boolean>(false);
 
   // create a storage instance
   const userStorage = createAsyncStorage("appDB");
@@ -39,6 +41,7 @@ export function Home() {
     load();
 
   },[])
+  
 
 //   await userStorage.removeItem("userToken");
 
@@ -63,12 +66,23 @@ export function Home() {
   }
   return (
     <View style={styles.container}>
-      <Text>Find My Socks</Text>
-      <Button screen="Profile" params={{ user: username }}>
-        Go to Profile
-      </Button>
-      <Button screen="Settings">Go to Settings</Button>
-      <Button screen="Storage">Manage Storage</Button>
+      <Text>What do you want to find {username}?</Text>
+      <TextInput 
+        onChangeText={onChangeSearchTerms}
+        editable
+        maxLength={20}
+        style={styles.input}
+      />
+      <Button 
+        title='Go'
+        onPress={() => {
+          setConfirmSearch(true);
+        }}
+        />
+      <NavButton screen="Storage">Manage Storage</NavButton>
+      <NavButton screen="Profile" params={{ user: username }}>
+        Edit Username
+      </NavButton>
     </View>
   );
 }
@@ -79,5 +93,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
+  },
+  input: {
+    width: '60%',
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });
