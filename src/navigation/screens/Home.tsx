@@ -4,6 +4,7 @@ import { CreateProfile } from './CreateProfile';
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
+import search from '../../db/search';
 
 export function Home() {
   const [userProfileCheck, setUserProfileCheck] = useState<boolean>(false);
@@ -13,6 +14,7 @@ export function Home() {
 
   // create a storage instance
   const userStorage = createAsyncStorage("appDB");
+  
 
   useEffect(() => {
 
@@ -41,7 +43,6 @@ export function Home() {
     load();
 
   },[])
-  
 
 //   await userStorage.removeItem("userToken");
 
@@ -64,21 +65,44 @@ export function Home() {
       <CreateProfile userStorage={userStorage}/>
     )
   }
+
+
   return (
     <View style={styles.container}>
-      <Text>What do you want to find {username}?</Text>
-      <TextInput 
-        onChangeText={onChangeSearchTerms}
-        editable
-        maxLength={20}
-        style={styles.input}
-      />
-      <Button 
-        title='Go'
-        onPress={() => {
-          setConfirmSearch(true);
-        }}
-        />
+      {!confirmSearch ? (
+        <View>
+          <Text>What do you want to find {username}?</Text>
+          <TextInput 
+            onChangeText={onChangeSearchTerms}
+            editable
+            maxLength={20}
+            style={styles.input}
+          />
+          <Button 
+            title='Go'
+            onPress={() => {
+              setConfirmSearch(true);
+              search(searchTerms, db)
+            }}
+          />
+        </View>
+      ) : (
+        <View>
+          <Text>Searchy searchy {username}?</Text>
+          <TextInput 
+            onChangeText={onChangeSearchTerms}
+            editable
+            maxLength={20}
+            style={styles.input}
+          />
+          <Button 
+            title='Go'
+            onPress={() => {
+              setConfirmSearch(true);
+            }}
+          />
+        </View>
+      )}
       <NavButton screen="Storage">Manage Storage</NavButton>
       <NavButton screen="Profile" params={{ user: username }}>
         Edit Username
