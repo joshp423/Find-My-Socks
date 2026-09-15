@@ -8,7 +8,7 @@ export default async function search(searchTerm: string, db: SQLiteDatabase) {
             searchTerm
         })
         if (!searchResultsBool) return "No Item Found"
-
+        
     } catch {
         
     }

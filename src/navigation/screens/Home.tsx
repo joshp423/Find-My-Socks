@@ -11,39 +11,13 @@ export function Home() {
   const [username, setUsername] = useState<string>("");
   const [searchTerms, onChangeSearchTerms] = useState<string>("");
   const [confirmSearch, setConfirmSearch] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<"No Item Found" | 
+
+  const db = SQLite.useSQLiteContext();
 
   // create a storage instance
   const userStorage = createAsyncStorage("appDB");
   
-
-  useEffect(() => {
-
-    async function load(){
-      //create db and table if not already
-      const db = await SQLite.openDatabaseAsync('databaseName');
-
-      await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS userContainers (
-          id INTEGER PRIMARY KEY NOT NULL,
-          name STRING NOT NULL
-        );
-        CREATE TABLE IF NOT EXISTS userCompartments (
-          id INTEGER PRIMARY KEY NOT NULL,
-          parentID INTEGER NOT NULL,
-          name STRING NOT NULL
-        );
-        CREATE TABLE IF NOT EXISTS userItems (
-          id INTEGER PRIMARY KEY NOT NULL,
-          parentID INTEGER NOT NULL,
-          name STRING NOT NULL,
-          amount INTEGER NOT NULL CHECK(amount >= 0 AND amount <= 100)
-        );
-      `);
-    };
-    load();
-
-  },[])
-
 //   await userStorage.removeItem("userToken");
 
   useEffect(() => {
@@ -82,7 +56,7 @@ export function Home() {
             title='Go'
             onPress={() => {
               setConfirmSearch(true);
-              search(searchTerms, db)
+              search(searchTerms, db);
             }}
           />
         </View>
