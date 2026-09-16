@@ -20,6 +20,8 @@ const linking = {
   prefixes: [createURL("/")],
 };
 
+//https://coolors.co/d6f9dd-abdf75-60695c-c5d6d8
+
 export function App() {
   const colorScheme = useColorScheme();
 
