@@ -1,5 +1,5 @@
-import { Text } from '@react-navigation/elements';
-import { StyleSheet, View } from 'react-native';
+import { Text } from "@react-navigation/elements";
+import { StyleSheet, View } from "react-native";
 
 export function Storage() {
   return (
@@ -12,12 +12,12 @@ export function Storage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     gap: 10,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
   },
 });

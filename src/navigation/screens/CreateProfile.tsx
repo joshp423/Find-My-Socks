@@ -1,13 +1,13 @@
-import { Text } from '@react-navigation/elements';
-import { useState } from 'react';
-import { StyleSheet, View, TextInput, Button } from 'react-native';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import { Text } from "@react-navigation/elements";
+import { useState } from "react";
+import { StyleSheet, View, TextInput, Button } from "react-native";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 type CreateProfileProps = {
-  userStorage: AsyncStorage
-}
+  userStorage: AsyncStorage;
+};
 
-export function CreateProfile({userStorage}: CreateProfileProps) {
+export function CreateProfile({ userStorage }: CreateProfileProps) {
   const [profileName, onChangeProfileName] = useState<string>("");
 
   return (
@@ -19,8 +19,8 @@ export function CreateProfile({userStorage}: CreateProfileProps) {
         style={styles.input}
         maxLength={20}
       />
-      <Button 
-        title='Submit'
+      <Button
+        title="Submit"
         onPress={() => {
           userStorage.setItem("userProfile", profileName);
         }}
@@ -32,12 +32,12 @@ export function CreateProfile({userStorage}: CreateProfileProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     gap: 10,
   },
   input: {
-    width: '60%',
+    width: "60%",
     height: 40,
     margin: 12,
     borderWidth: 1,
