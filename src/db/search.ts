@@ -1,7 +1,7 @@
 import { type SQLiteDatabase } from "expo-sqlite";
 import { type ItemSearchResults } from "../types/itemSearchResults";
 
-type SearchResultsArray = {
+type SearchResultsFull = {
   id: number;
   itemName: string;
   amount: number;
@@ -12,7 +12,7 @@ type SearchResultsArray = {
 export default async function search(
   searchTerm: string,
   db: SQLiteDatabase,
-): Promise<ItemSearchResults[] | string> {
+): Promise<ItemSearchResults[] | "No Item Found"> {
   const statement = await db.prepareAsync(
     `SELECT userItems.id,
          userItems.name AS itemName,
@@ -22,14 +22,14 @@ export default async function search(
          FROM userItems
          INNER JOIN userCompartments ON userItems.parentID=userCompartments.id
          INNER JOIN userContainers ON userCompartments.parentID=userContainers.id
-         WHERE itemName = $searchTerm`,
+         WHERE userItems.name = $searchTerm`,
   );
   try {
-    const searchResultsFull = await statement.executeAsync<SearchResultsArray>({
+    const searchResultsFull = await statement.executeAsync<SearchResultsFull>({
       $searchTerm: searchTerm,
     });
 
-    const searchResultsArray = await searchResultsFull?.getAllAsync();
+    const searchResultsArray = await searchResultsFull.getAllAsync();
 
     if (searchResultsArray.length === 0) return "No Item Found";
 
@@ -49,6 +49,10 @@ export default async function search(
 
     return searchResults;
   } catch {
+    //add error handling
     return "No Item Found";
+  } finally {
+    //clean up memory allocation
+    await statement.finalizeAsync();
   }
 }

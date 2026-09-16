@@ -13,7 +13,7 @@ export function Home() {
   const [searchTerms, onChangeSearchTerms] = useState<string>("");
   const [confirmSearch, setConfirmSearch] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<
-    "No Item Found" | ItemSearchResults | null
+    "No Item Found" | ItemSearchResults[] | null
   >(null);
 
   const db = SQLite.useSQLiteContext();
@@ -54,9 +54,10 @@ export function Home() {
           />
           <Button
             title="Go"
-            onPress={() => {
+            onPress={async () => {
               setConfirmSearch(true);
-              search(searchTerms, db);
+              const searchResults = await search(searchTerms, db);
+              if (searchResults) setSearchResults(searchResults);
             }}
           />
         </View>
