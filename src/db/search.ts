@@ -1,10 +1,19 @@
 import { type SQLiteDatabase } from "expo-sqlite";
+import { type ItemSearchResults } from "../types/itemSearchResults";
 
-export default async function search(searchTerm: string, db: SQLiteDatabase) {
-  const statementBool = await db.prepareAsync(
-    "SELECT * FROM userItems WHERE name = $searchTerm",
-  );
-  const statementFull = await db.prepareAsync(
+type SearchResultsArray = {
+  id: number;
+  itemName: string;
+  amount: number;
+  compartmentName: string;
+  containerName: string;
+};
+
+export default async function search(
+  searchTerm: string,
+  db: SQLiteDatabase,
+): Promise<ItemSearchResults[] | string> {
+  const statement = await db.prepareAsync(
     `SELECT userItems.id,
          userItems.name AS itemName,
          userItems.amount,
@@ -16,9 +25,30 @@ export default async function search(searchTerm: string, db: SQLiteDatabase) {
          WHERE itemName = $searchTerm`,
   );
   try {
-    const searchResultsBool = await statementBool.executeAsync<{
-      $searchTerm: string;
-    }>({ searchTerm });
-    if (!searchResultsBool) return "No Item Found";
-  } catch {}
+    const searchResultsFull = await statement.executeAsync<SearchResultsArray>({
+      $searchTerm: searchTerm,
+    });
+
+    const searchResultsArray = await searchResultsFull?.getAllAsync();
+
+    if (searchResultsArray.length === 0) return "No Item Found";
+
+    const searchResults: ItemSearchResults[] = searchResultsArray.map(
+      (row) => ({
+        id: row.id,
+        name: row.itemName,
+        amount: row.amount,
+        parent: {
+          name: row.compartmentName,
+          parent: {
+            name: row.containerName,
+          },
+        },
+      }),
+    );
+
+    return searchResults;
+  } catch {
+    return "No Item Found";
+  }
 }
