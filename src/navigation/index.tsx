@@ -18,7 +18,27 @@ import { Settings } from "./screens/Settings";
 import { Updates } from "./screens/Updates";
 import { Storage } from "./screens/Storage";
 
+
+
 const HomeTabs = createBottomTabNavigator({
+  screenOptions: {
+    tabBarStyle: {
+      position: "absolute",
+      width: "80%",
+      justifyContent: "center",
+      borderRadius: 24,
+      marginLeft: "10%",
+      marginRight: "10%",
+      marginBottom: "5%",
+      paddingBottom: 0,
+      height: 50,
+      alignContent: "center",
+    },
+    tabBarActiveBackgroundColor: "#ABDF75",
+    tabBarInactiveBackgroundColor: "#60695C",
+    tabBarActiveTintColor: "black",
+    tabBarInactiveTintColor: "white"
+  },
   screens: {
     Home: createBottomTabScreen({
       screen: Home,
@@ -34,6 +54,7 @@ const HomeTabs = createBottomTabNavigator({
             }}
           />
         ),
+        headerShown: false
       },
     }),
     Updates: createBottomTabScreen({

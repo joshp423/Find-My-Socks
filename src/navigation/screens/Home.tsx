@@ -1,5 +1,5 @@
 import { Button as NavButton, Text } from "@react-navigation/elements";
-import { StyleSheet, View, TextInput, Button, FlatList } from "react-native";
+import { StyleSheet, View, TextInput, Button, FlatList, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { CreateProfile } from "./CreateProfile";
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as SQLite from "expo-sqlite";
@@ -62,68 +62,78 @@ export function Home() {
   }
 
   return (
-    <View style={styles.container}>
-      {!confirmSearch ? (
-        <View style={styles.searchBarContainer}>
-          <Text style={styles.searchBarTitle} >What do you want to find {username}?</Text>
-          <TextInput
-            onChangeText={onChangeSearchTerms}
-            editable
-            maxLength={20}
-            style={styles.input}
-          />
-          <View>
-            <MyButton 
-              onPress={ async () => {
-                setConfirmSearch(true);
-                const searchResults = await search(searchTerms, db);
-                setSearchResults(searchResults);
-                return;
-              }}
-              title="Go"
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Find My Socks</Text>
+        {!confirmSearch ? (
+          <View style={styles.searchBarContainer}>
+            <TextInput
+              onChangeText={onChangeSearchTerms}
+              editable
+              maxLength={20}
+              style={styles.input}
+              placeholder="Search for item"
             />
+            <View>
+              <MyButton 
+                onPress={ async () => {
+                  setConfirmSearch(true);
+                  const searchResults = await search(searchTerms, db);
+                  setSearchResults(searchResults);
+                  return;
+                }}
+                title="Go"
+              />
+            </View>
           </View>
-        </View>
-      ) : (
-        <View>
-          {searchResults !== "No Item Found" ? (
-            <View >
-              <Text>Here's where to find {searchTerms}, {username}:</Text>
-              <View>
-                <FlatList
-                  data={searchResults}
-                  renderItem={({item}) => 
-                    <Item
-                      itemName={item.name}
-                      itemAmount={item.amount}
-                      compartmentName={item.parent.name}
-                      containerName={item.parent.parent.name}
-                    />
-                  }
+        ) : (
+          <View>
+            {searchResults !== "No Item Found" ? (
+              <View >
+                <Text>Here's where to find {searchTerms}:</Text>
+                <View>
+                  <FlatList
+                    data={searchResults}
+                    renderItem={({item}) => 
+                      <Item
+                        itemName={item.name}
+                        itemAmount={item.amount}
+                        compartmentName={item.parent.name}
+                        containerName={item.parent.parent.name}
+                      />
+                    }
+                  />
+                </View>
+                <MyButton 
+                  title="Back"
+                  onPress={() => {
+                    setSearchResults(null)
+                    setConfirmSearch(false)
+                  }}
                 />
               </View>
+            ) : (
+            <View style={styles.searchBarContainer}>
+              <Text>Item Not Found</Text>
+              <Button 
+                title="Back"
+                onPress={() => {
+                  setSearchResults(null)
+                  setConfirmSearch(false)
+                }}
+              />
             </View>
-          ) : (
-           <View style={styles.searchBarContainer}>
-            <Text>Item Not Found</Text>
-            <Button 
-              title="Back"
-              onPress={() => {
-                setSearchResults(null)
-                setConfirmSearch(false)
-              }}
-            />
-           </View>
-          )}
+            )}
+          </View>
+        )}
+        <View style={styles.navButtons}>
+          <NavButton screen="Storage">Manage Storage</NavButton>
+          <NavButton screen="Profile" params={{ user: username }}>
+            Edit Username
+          </NavButton>
         </View>
-      )}
-      <View style={styles.navButtons}>
-        <NavButton screen="Storage">Manage Storage</NavButton>
-        <NavButton screen="Profile" params={{ user: username }}>
-          Edit Username
-        </NavButton>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -132,33 +142,36 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    gap: 10,
+    gap: 5,
     width: "100%",
-    marginBottom: 50
+    backgroundColor: '#D6F9DD',
   },
   input: {
-    width: "60%",
+    width: "100%",
     height: 40,
-    margin: 12,
-    borderWidth: 1,
+    margin: 10,
     padding: 10,
     borderRadius: 16,
+    backgroundColor: "white"
+  },
+  title: {
+    marginTop: 60,
+    fontSize: 30,
+    alignSelf: "flex-start",
+    paddingLeft: 20,
+    fontWeight: "bold"
   },
   searchBarContainer: {
     flex: 2,
     width: "100%",
     padding: 10,
     gap: 20,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-  },
-  searchBarTitle: {
-    fontWeight: "bold",
-    fontSize: 20,
   },
   navButtons: {
     flex: 1,
     gap: 15,
-    justifyContent: "center",
+    justifyContent: "flex-start",
   }
 });
