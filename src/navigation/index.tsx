@@ -14,7 +14,6 @@ import newspaper from "../assets/newspaper.png";
 import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
 import { Profile } from "./screens/Profile";
-import { Settings } from "./screens/Settings";
 import { Storage } from "./screens/Storage";
 
 

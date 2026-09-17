@@ -1,5 +1,5 @@
 import { Button as NavButton, Text } from "@react-navigation/elements";
-import { StyleSheet, View, TextInput, Button, FlatList, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, View, TextInput, Button, FlatList, TouchableWithoutFeedback, Keyboard, ScrollView } from "react-native";
 import { CreateProfile } from "./CreateProfile";
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as SQLite from "expo-sqlite";
@@ -65,7 +65,6 @@ export function Home() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Text style={styles.title}>Find My Socks</Text>
-        {!confirmSearch ? (
           <View style={styles.searchBarContainer}>
             <TextInput
               onChangeText={onChangeSearchTerms}
@@ -86,46 +85,33 @@ export function Home() {
               />
             </View>
           </View>
-        ) : (
-          <View>
-            {searchResults !== "No Item Found" ? (
-              <View >
-                <Text>Here's where to find {searchTerms}:</Text>
-                <View>
-                  <FlatList
-                    data={searchResults}
-                    renderItem={({item}) => 
-                      <Item
-                        itemName={item.name}
-                        itemAmount={item.amount}
-                        compartmentName={item.parent.name}
-                        containerName={item.parent.parent.name}
-                      />
-                    }
-                  />
+          {confirmSearch ? (
+            <View style={styles.searchResultsContainer}>
+              {searchResults !== "No Item Found" ? (
+                <View style={styles.foundSearchResults}>
+                  <Text style={styles.searchTermTitle}>Here's where to find {searchTerms}:</Text>
+                  <View style={styles.searchResultsScrollContainer}>
+                    <FlatList
+                      data={searchResults}
+                      style={styles.resultsList}
+                      renderItem={({item}) => 
+                        <Item
+                          itemName={item.name}
+                          itemAmount={item.amount}
+                          compartmentName={item.parent.name}
+                          containerName={item.parent.parent.name}
+                        />
+                      }
+                    />
+                  </View>
                 </View>
-                <MyButton 
-                  title="Back"
-                  onPress={() => {
-                    setSearchResults(null)
-                    setConfirmSearch(false)
-                  }}
-                />
-              </View>
-            ) : (
-            <View style={styles.searchBarContainer}>
-              <Text>Item Not Found</Text>
-              <Button 
-                title="Back"
-                onPress={() => {
-                  setSearchResults(null)
-                  setConfirmSearch(false)
-                }}
-              />
+              ) : (
+                <View style={styles.searchBarContainer}>
+                  <Text>Item Not Found</Text>
+                </View>
+              )}
             </View>
-            )}
-          </View>
-        )}
+          ) : <></> }
         <View style={styles.navButtons}>
           <NavButton 
             screen="Profile" params={{ user: username }}
@@ -147,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
     width: "100%",
-    backgroundColor: '#D6F9DD',
+    backgroundColor: '#C5D6D8',
   },
   input: {
     width: "100%",
@@ -165,11 +151,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   searchBarContainer: {
-    flex: 2,
     width: "100%",
+    height: "auto",
     padding: 10,
     gap: 20,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
   },
   navButtons: {
@@ -187,5 +173,27 @@ const styles = StyleSheet.create({
     borderColor: '#60695C',
     borderStyle: "solid",
     borderWidth: 1,
-  }
+  },
+  searchResultsContainer: {
+    marginTop: 30,
+    justifyContent:"center",
+    alignContent:"center",
+  },
+  foundSearchResults: {
+    gap: 10,
+    justifyContent:"center",
+    alignContent:"center",
+    alignItems: "center",
+  },
+  searchTermTitle: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  searchResultsScrollContainer: {
+    flex: 1
+  },
+  resultsList: {
+    gap:10
+  },
+
 });
