@@ -127,8 +127,11 @@ export function Home() {
           </View>
         )}
         <View style={styles.navButtons}>
-          <NavButton screen="Storage">Manage Storage</NavButton>
-          <NavButton screen="Profile" params={{ user: username }}>
+          <NavButton 
+            screen="Profile" params={{ user: username }}
+            style={styles.navButton}
+            color="black"
+          >
             Edit Username
           </NavButton>
         </View>
@@ -172,6 +175,17 @@ const styles = StyleSheet.create({
   navButtons: {
     flex: 1,
     gap: 15,
-    justifyContent: "flex-start",
+    justifyContent: "center",
+  },
+  navButton: {
+    backgroundColor: '#ABDF75',
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#60695C',
+    borderStyle: "solid",
+    borderWidth: 1,
   }
 });

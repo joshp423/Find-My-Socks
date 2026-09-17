@@ -15,7 +15,6 @@ import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
 import { Profile } from "./screens/Profile";
 import { Settings } from "./screens/Settings";
-import { Updates } from "./screens/Updates";
 import { Storage } from "./screens/Storage";
 
 
@@ -58,7 +57,7 @@ const HomeTabs = createBottomTabNavigator({
       },
     }),
     Updates: createBottomTabScreen({
-      screen: Updates,
+      screen: Storage,
       options: {
         tabBarIcon: ({ color, size }) => (
           <Image
@@ -95,17 +94,6 @@ const RootStack = createNativeStackNavigator({
           user: (value) => `@${value}`,
         },
       },
-    }),
-    Settings: createNativeStackScreen({
-      screen: Settings,
-      options: ({ navigation }) => ({
-        presentation: "modal",
-        headerRight: () => (
-          <HeaderButton onPress={navigation.goBack}>
-            <Text>Close</Text>
-          </HeaderButton>
-        ),
-      }),
     }),
     Storage: createNativeStackScreen({
       screen: Storage,
