@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import search from "../../db/search";
 import { type ItemSearchResults } from "../../types/itemSearchResults";
 import MyButton from "../../components/buttons";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function Home() {
   const [userProfileCheck, setUserProfileCheck] = useState<boolean>(false);
@@ -49,7 +50,9 @@ export function Home() {
     //style these
     <View style={styles.resultsList}>
       <Text style={styles.resultsContainerText}>{containerName}</Text>
+      <AntDesign name="arrow-down" size={16} color="black" />
       <Text style={styles.resultsCompartmentText}>{compartmentName}</Text>
+      <AntDesign name="arrow-down" size={16} color="black" style={styles.resultsArrow}/>
       <View style={styles.resultsItemContainer}>
         <Text style={styles.resultsItemText}>{itemName}</Text>
         <Text style={styles.resultsItemAmountText}>Amount: {itemAmount}</Text>
@@ -190,21 +193,22 @@ const styles = StyleSheet.create({
   searchTermTitle: {
     fontSize: 20,
     fontWeight: "bold",
+    borderBottomWidth: 0.5
   },
   searchResultsScrollContainer: {
     
   },
   resultsList: {
-    gap:15, 
+    gap: 10, 
     borderRadius: 12,
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     backgroundColor: "#ABDF75",
-    color: "white",
+    borderWidth: 0.5,
+    alignItems: "center",
   },
   resultsContainerText: {
     fontSize: 18,
-    paddingLeft: 5,
     color: "black",
   },
   resultsCompartmentText: {
@@ -224,6 +228,9 @@ const styles = StyleSheet.create({
   resultsItemAmountText: {
     fontSize: 14,
     color: "black",
+  },
+  resultsArrow: {
+    alignSelf: "center"
   }
 
 });
