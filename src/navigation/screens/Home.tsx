@@ -47,12 +47,12 @@ export function Home() {
 
   const Item = ({itemName, itemAmount, compartmentName, containerName}: ItemProps) => (
     //style these
-    <View >
-      <Text>{containerName}</Text>
-      <Text>{compartmentName}</Text>
-      <View>
-        <Text>{itemName}</Text>
-        <Text>Amount: {itemAmount}</Text>
+    <View style={styles.resultsList}>
+      <Text style={styles.resultsContainerText}>{containerName}</Text>
+      <Text style={styles.resultsCompartmentText}>{compartmentName}</Text>
+      <View style={styles.resultsItemContainer}>
+        <Text style={styles.resultsItemText}>{itemName}</Text>
+        <Text style={styles.resultsItemAmountText}>Amount: {itemAmount}</Text>
       </View>
     </View>
   );
@@ -93,7 +93,6 @@ export function Home() {
                   <View style={styles.searchResultsScrollContainer}>
                     <FlatList
                       data={searchResults}
-                      style={styles.resultsList}
                       renderItem={({item}) => 
                         <Item
                           itemName={item.name}
@@ -176,24 +175,55 @@ const styles = StyleSheet.create({
   },
   searchResultsContainer: {
     marginTop: 30,
+    width: "100%",
     justifyContent:"center",
-    alignContent:"center",
+    alignContent:"flex-start",
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderWidth: 0,
   },
   foundSearchResults: {
     gap: 10,
     justifyContent:"center",
-    alignContent:"center",
-    alignItems: "center",
+    alignContent:"flex-start",
   },
   searchTermTitle: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   searchResultsScrollContainer: {
-    flex: 1
+    
   },
   resultsList: {
-    gap:10
+    gap:15, 
+    borderRadius: 12,
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: "#ABDF75",
+    color: "white",
   },
+  resultsContainerText: {
+    fontSize: 18,
+    paddingLeft: 5,
+    color: "black",
+  },
+  resultsCompartmentText: {
+    fontSize: 16,
+    paddingLeft: 5,
+    color: "black",
+  },
+  resultsItemContainer: {
+    flexDirection:"row",
+    gap: 10,
+    paddingLeft: 5,
+  },
+  resultsItemText: {
+    fontSize: 14,
+    color: "black",
+  },
+  resultsItemAmountText: {
+    fontSize: 14,
+    color: "black",
+  }
 
 });
