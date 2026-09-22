@@ -84,7 +84,7 @@ export function Home() {
                   setSearchResults(searchResults);
                   return;
                 }}
-                title="Go"
+                title="Search"
               />
             </View>
           </View>
@@ -213,13 +213,14 @@ const styles = StyleSheet.create({
   },
   resultsCompartmentText: {
     fontSize: 16,
-    paddingLeft: 5,
     color: "black",
   },
   resultsItemContainer: {
-    flexDirection:"row",
+    alignItems: "center",
     gap: 10,
-    paddingLeft: 5,
+    padding: 5,
+    borderWidth: 0.5,
+    borderRadius: 12
   },
   resultsItemText: {
     fontSize: 14,

@@ -15,6 +15,7 @@ import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
 import { Profile } from "./screens/Profile";
 import { Storage } from "./screens/Storage";
+import { fa } from "zod/v4/locales";
 
 
 
@@ -41,7 +42,7 @@ const HomeTabs = createBottomTabNavigator({
     Home: createBottomTabScreen({
       screen: Home,
       options: {
-        title: "Home",
+        title: "Find Items",
         tabBarIcon: ({ color, size }) => (
           <Image
             source={newspaper}
@@ -55,9 +56,11 @@ const HomeTabs = createBottomTabNavigator({
         headerShown: false
       },
     }),
-    Updates: createBottomTabScreen({
+    ManageStorage: createBottomTabScreen({
       screen: Storage,
       options: {
+        title: "Manage Storage",
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <Image
             source={bell}
@@ -96,15 +99,10 @@ const RootStack = createNativeStackNavigator({
     }),
     Storage: createNativeStackScreen({
       screen: Storage,
-      options: ({ navigation }) => ({
+      options: {
         title: "Manage Storage",
-        presentation: "modal",
-        headerRight: () => (
-          <HeaderButton onPress={navigation.goBack}>
-            <Text>Close</Text>
-          </HeaderButton>
-        ),
-      }),
+        headerShown: false,
+      },
     }),
     NotFound: createNativeStackScreen({
       screen: NotFound,
