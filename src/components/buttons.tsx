@@ -1,12 +1,19 @@
+import { ReactNode } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { GestureResponderEvent } from 'react-native';
 
-type ButtonProps = {
-    onPress: ((event: GestureResponderEvent) => void) | undefined
-    title: string
+type DefaultButtonProps = {
+  onPress: ((event: GestureResponderEvent) => void) | undefined
+  title: string
 }
 
-export default function MyButton({ onPress, title }: ButtonProps) {
+type ExpandButtonProps = {
+  onPress: ((event: GestureResponderEvent) => void) | undefined
+  title: string
+  children: ReactNode //enable children
+}
+
+export function DefaultButton({ onPress, title }: DefaultButtonProps) {
   return (
     <Pressable style={styles.button} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
@@ -14,6 +21,14 @@ export default function MyButton({ onPress, title }: ButtonProps) {
   );
 }
 
+export function ExpandButton({ onPress, title, children }: ExpandButtonProps) {
+  //if no children render text
+  return (
+    <Pressable style={styles.button} onPress={onPress}>
+      {children ? children : <Text style={styles.text}>{title}</Text>} 
+    </Pressable>
+  );
+}
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#ABDF75',

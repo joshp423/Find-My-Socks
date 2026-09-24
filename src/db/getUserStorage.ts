@@ -25,6 +25,8 @@ export default async function getUserStorage(
  
   try {
     const userContainers: container[] =  await db.getAllAsync('SELECT * FROM userContainers');
+    if (userContainers.length === 0) return "No Data Found";
+
     const userCompartments: compartment[] = await db.getAllAsync('SELECT * FROM userCompartments');
     const userItems: item[] = await db.getAllAsync('SELECT * FROM userItems');
 

@@ -6,7 +6,7 @@ import * as SQLite from "expo-sqlite";
 import { useEffect, useState } from "react";
 import search from "../../db/search";
 import { type ItemSearchResults } from "../../types/itemSearchResults";
-import MyButton from "../../components/buttons";
+import { DefaultButton } from "../../components/Buttons";
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function Home() {
@@ -77,7 +77,7 @@ export function Home() {
               placeholder="Search for item"
             />
             <View>
-              <MyButton 
+              <DefaultButton 
                 onPress={ async () => {
                   setConfirmSearch(true);
                   const searchResults = await search(searchTerms, db);
