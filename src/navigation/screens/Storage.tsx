@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     gap: 5,
     width: "100%",
     backgroundColor: '#C5D6D8',
+    padding: 20
   },
   row: {
     flexDirection: "row",
@@ -90,13 +91,13 @@ const styles = StyleSheet.create({
     marginTop: 60,
     fontSize: 30,
     alignSelf: "flex-start",
-    paddingLeft: 20,
     fontWeight: "bold"
   },
   flatListUserData: {
     width: "100%"
   },
   userContainer: {
+    marginTop: 30,
     width: "100%",
     alignItems: "center",
     gap: 20,
@@ -105,20 +106,11 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 5,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   containerTitle:{
     fontSize: 20
-  },
-  userCompartmentControlRow: {
-    display: "flex",
-    width: "100%",
-    padding: 5,
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  compartmentTitle: {
-    
   },
   disabled: {
     display: "none",

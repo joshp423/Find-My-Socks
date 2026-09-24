@@ -57,10 +57,11 @@ const styles = StyleSheet.create({
         width: "100%",
         padding: 5,
         flexDirection: "row",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
+        alignItems: "center"
     },
     compartmentTitle: {
-        
+        fontSize: 15
     },
     disabled: {
         display: "none",
