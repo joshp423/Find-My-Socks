@@ -1,7 +1,7 @@
 import { userCompartment } from "../types/userCompartment";
 import { UserItem } from "../types/userItem";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import { ExpandButton } from "./Buttons";
+import { ExpandButton } from "./buttons";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
 
