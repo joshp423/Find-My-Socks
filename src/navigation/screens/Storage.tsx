@@ -5,7 +5,7 @@ import getUserStorage from "../../db/getUserStorage";
 import * as SQLite from "expo-sqlite";
 import { UserContainer } from "../../types/userContainer";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { ExpandButton } from "../../components/Buttons";
+import { ExpandButton } from "../../components/buttons";
 import Compartment from "../../components/Compartment";
 
 export function Storage() {

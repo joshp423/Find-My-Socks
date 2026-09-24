@@ -6,7 +6,7 @@ import * as SQLite from "expo-sqlite";
 import { useEffect, useState } from "react";
 import search from "../../db/search";
 import { type ItemSearchResults } from "../../types/itemSearchResults";
-import { DefaultButton } from "../../components/Buttons";
+import { DefaultButton } from "../../components/buttons";
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function Home() {
