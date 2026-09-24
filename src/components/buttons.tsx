@@ -24,7 +24,7 @@ export function DefaultButton({ onPress, title }: DefaultButtonProps) {
 export function ExpandButton({ onPress, title, children }: ExpandButtonProps) {
   //if no children render text
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={styles.expandButton} onPress={onPress}>
       {children ? children : <Text style={styles.text}>{title}</Text>} 
     </Pressable>
   );
@@ -34,6 +34,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#ABDF75',
     paddingVertical: 10,
     paddingHorizontal: 40,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#60695C',
+    borderStyle: "solid",
+    borderWidth: 1,
+  },
+  expandButton: {
+    backgroundColor: '#ABDF75',
+    paddingVertical: 5,
+    paddingHorizontal: 20,
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',

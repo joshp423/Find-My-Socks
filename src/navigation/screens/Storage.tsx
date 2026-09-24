@@ -5,7 +5,7 @@ import getUserStorage from "../../db/getUserStorage";
 import * as SQLite from "expo-sqlite";
 import { UserContainer } from "../../types/userContainer";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { ExpandButton } from "../../components/buttons";
+import { ExpandButton } from "../../components/Buttons";
 import Compartment from "../../components/Compartment";
 
 export function Storage() {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     fontSize: 30,
     alignSelf: "flex-start",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   flatListUserData: {
     width: "100%"
@@ -101,13 +101,18 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     gap: 20,
+    borderTopWidth: 0.5,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   userContainerControlRow: {
     width: "100%",
     padding: 5,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    borderBottomWidth: 0.5,
+    paddingBottom: 15
   },
   containerTitle:{
     fontSize: 20

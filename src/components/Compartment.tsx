@@ -1,7 +1,7 @@
 import { userCompartment } from "../types/userCompartment";
 import { UserItem } from "../types/userItem";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import { ExpandButton } from "./buttons";
+import { ExpandButton } from "./Buttons";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
 
@@ -44,7 +44,6 @@ export default function Compartment({compartmentData, viewedContainerExpand}: Co
     );
 }
 
-  
 
 const styles = StyleSheet.create({
     userCompartment: {
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     compartmentTitle: {
-        fontSize: 15
+        fontSize: 15,
     },
     disabled: {
         display: "none",
