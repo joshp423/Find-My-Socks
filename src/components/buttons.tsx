@@ -37,9 +37,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#60695C',
-    borderStyle: "solid",
-    borderWidth: 1,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.23)',
   },
   expandButton: {
     backgroundColor: '#ABDF75',
@@ -48,9 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#60695C',
-    borderStyle: "solid",
-    borderWidth: 1,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.23)',
   },
   text: {
     color: 'black',

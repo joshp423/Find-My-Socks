@@ -28,7 +28,7 @@ export default function Compartment({compartmentData, viewedContainerExpand}: Co
 
     return(
         <View style={viewedContainerExpand ? styles.userCompartment : styles.disabled}>
-        <View style={styles.userCompartmentControlRow}>
+        <View style={!compartmentContainerExpand ? styles.userCompartmentControlRow : styles.userCompartmentControlRowExpanded}>
             <Text style={styles.compartmentTitle}>{compartmentData.name}</Text>
             <ExpandButton
                 title=""
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         display: "flex",
         width: "100%",
         alignItems: "center",
-        gap: 20,
+        paddingTop: 10
     },
     userCompartmentControlRow: {
         width: "100%",
@@ -59,6 +59,15 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center"
     },
+    userCompartmentControlRowExpanded: {
+        width: "100%",
+        padding: 5,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingBottom: 15,
+        borderBottomWidth: 0.5,
+    },
     compartmentTitle: {
         fontSize: 15,
     },
@@ -66,7 +75,10 @@ const styles = StyleSheet.create({
         display: "none",
     },
     userItem: {
-
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
+        paddingTop: 10
     }
 
 

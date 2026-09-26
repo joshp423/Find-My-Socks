@@ -36,7 +36,7 @@ export function Storage() {
   const Container = ({containerData}: ContainerProps) => (
     //style these
     <View style={styles.userContainer}>
-      <View style={styles.userContainerControlRow}>
+      <View style={!viewedContainerExpand ? styles.userContainerControlRow : styles.userContainerControlRowExpanded}>
         <Text style={styles.containerTitle}>{containerData.name}</Text>
         <ExpandButton
           title=""
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     width: "100%",
     alignItems: "center",
-    gap: 20,
-    borderTopWidth: 0.5,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
     paddingBottom: 10,
     paddingTop: 10,
   },
@@ -111,8 +111,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  userContainerControlRowExpanded: {
+    width: "100%",
+    padding: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 15,
     borderBottomWidth: 0.5,
-    paddingBottom: 15
   },
   containerTitle:{
     fontSize: 20
