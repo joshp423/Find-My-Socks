@@ -7,6 +7,7 @@ import { UserContainer } from "../../types/userContainer";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { DeleteButton, ExpandButton, RenameButton, AddButton } from "../../components/Buttons";
 import Compartment from "../../components/Compartment";
+import { EditData } from "../../components/EditRename";
 
 export function Storage() {
   const [userStorage, setUserStorage] = useState<UserContainer[] | null>(null);
@@ -44,7 +45,6 @@ export function Storage() {
           <AddButton 
             title="Add"
             onPress={() => {
-              
               setViewedContainerExpand(prev => !prev);
             }}
             children={<AntDesign name="plus" size={16} color="white" />} 
@@ -81,6 +81,15 @@ export function Storage() {
     <View style={styles.container}>
       <Text style={styles.title}>Manage Storage</Text>
       {userStorage ? (
+        editedContainerId ? 
+        (
+          <EditData 
+            onPressConfirm={}
+            onPressCancel={() => setEditedContainerId(null)}
+            value={
+          />
+        ) :
+        (
         <FlatList
           style={styles.flatListUserData}
           data={userStorage}
@@ -90,7 +99,7 @@ export function Storage() {
             />
           }
         />
-      ) : (
+      ) :  : (
         <Text>No Data</Text>
       )}
     </View>
