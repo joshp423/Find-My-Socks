@@ -13,6 +13,7 @@ export function Storage() {
   const [userStorage, setUserStorage] = useState<UserContainer[] | null>(null);
   const [viewedContainerExpand, setViewedContainerExpand] = useState<boolean>(false);
   const [editedContainerId, setEditedContainerId] = useState<number | null>(null);
+  const [deletedContainerId, setDeletedContainerId] = useState<number | null>(null);
 
   const db = SQLite.useSQLiteContext();
   
@@ -66,7 +67,7 @@ export function Storage() {
               />
               <DeleteButton 
                 title="Delete"
-                onPress={() => {setViewedContainerExpand(prev => !prev)}}
+                onPress={() => {setDeletedContainerId(containerData.id)}}
                 children={<AntDesign name="delete" size={16} color="black" />} 
               />
               <ExpandButton
