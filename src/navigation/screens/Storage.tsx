@@ -40,35 +40,44 @@ export function Storage() {
     //style these
     <View style={styles.userContainer}>
       <View style={!viewedContainerExpand ? styles.userContainerControlRow : styles.userContainerControlRowExpanded}>
-        <Text style={styles.containerTitle}>{containerData.name}</Text>
-        <View style={styles.buttonContainer}>
-          <AddButton 
-            title="Add"
-            onPress={() => {
-              setViewedContainerExpand(prev => !prev);
-            }}
-            children={<AntDesign name="plus" size={16} color="white" />} 
+        {editedContainerId ? (
+          <EditData 
+            onPressConfirm={() => {return}}
+            onPressCancel={() => setEditedContainerId(null)}
+            value={containerData.name}
           />
-          <RenameButton 
-            title="Delete"
-            onPress={() => {
-              setEditedContainerId(containerData.id);
-            }}
-            children={<AntDesign name="edit" size={16} color="black" />} 
-          />
-          <DeleteButton 
-            title="Delete"
-            onPress={() => {setViewedContainerExpand(prev => !prev)}}
-            children={<AntDesign name="delete" size={16} color="black" />} 
-          />
-          <ExpandButton
-            title=""
-            onPress={() => {setViewedContainerExpand(prev => !prev)}}
-            children={!viewedContainerExpand ? <AntDesign name="arrow-down" size={16} color="black" /> : <AntDesign name="arrow-up" size={16} color="black" />}
-          />
-        </View>
+        ) : (
+          <>
+            <Text style={styles.containerTitle}>{containerData.name}</Text>
+            <View style={styles.buttonContainer}>
+              <AddButton 
+                title="Add"
+                onPress={() => {
+                  setViewedContainerExpand(prev => !prev);
+                }}
+                children={<AntDesign name="plus" size={16} color="white" />} 
+              />
+              <RenameButton 
+                title="Delete"
+                onPress={() => {
+                  setEditedContainerId(containerData.id);
+                }}
+                children={<AntDesign name="edit" size={16} color="black" />} 
+              />
+              <DeleteButton 
+                title="Delete"
+                onPress={() => {setViewedContainerExpand(prev => !prev)}}
+                children={<AntDesign name="delete" size={16} color="black" />} 
+              />
+              <ExpandButton
+                title=""
+                onPress={() => {setViewedContainerExpand(prev => !prev)}}
+                children={!viewedContainerExpand ? <AntDesign name="arrow-down" size={16} color="black" /> : <AntDesign name="arrow-up" size={16} color="black" />}
+              />
+            </View>
+          </>
+        )}
       </View>
-      
       <FlatList 
         data={containerData.compartments}
         renderItem={({item: compartment}) => <Compartment compartmentData={compartment} viewedContainerExpand={viewedContainerExpand} /> }
@@ -81,15 +90,6 @@ export function Storage() {
     <View style={styles.container}>
       <Text style={styles.title}>Manage Storage</Text>
       {userStorage ? (
-        editedContainerId ? 
-        (
-          <EditData 
-            onPressConfirm={}
-            onPressCancel={() => setEditedContainerId(null)}
-            value={
-          />
-        ) :
-        (
         <FlatList
           style={styles.flatListUserData}
           data={userStorage}
@@ -99,7 +99,7 @@ export function Storage() {
             />
           }
         />
-      ) :  : (
+      ) :  (
         <Text>No Data</Text>
       )}
     </View>
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    minHeight: 50
   },
   userContainerControlRowExpanded: {
     width: "100%",
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 15,
     borderBottomWidth: 0.5,
+    minHeight: 50
   },
   containerTitle:{
     fontSize: 20
