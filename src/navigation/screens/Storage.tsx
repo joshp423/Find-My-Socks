@@ -5,12 +5,14 @@ import getUserStorage from "../../db/getUserStorage";
 import * as SQLite from "expo-sqlite";
 import { UserContainer } from "../../types/userContainer";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { ExpandButton } from "../../components/Buttons";
+import { DeleteButton, ExpandButton, RenameButton, AddButton } from "../../components/Buttons";
 import Compartment from "../../components/Compartment";
 
 export function Storage() {
   const [userStorage, setUserStorage] = useState<UserContainer[] | null>(null);
   const [viewedContainerExpand, setViewedContainerExpand] = useState<boolean>(false);
+  const [editedContainerId, setEditedContainerId] = useState<number | null>(null);
+
   const db = SQLite.useSQLiteContext();
   
   useEffect(() => {
@@ -38,11 +40,33 @@ export function Storage() {
     <View style={styles.userContainer}>
       <View style={!viewedContainerExpand ? styles.userContainerControlRow : styles.userContainerControlRowExpanded}>
         <Text style={styles.containerTitle}>{containerData.name}</Text>
-        <ExpandButton
-          title=""
-          onPress={() => {setViewedContainerExpand(prev => !prev)}}
-          children={!viewedContainerExpand ? <AntDesign name="arrow-down" size={16} color="black" /> : <AntDesign name="arrow-up" size={16} color="black" />}
-        />
+        <View style={styles.buttonContainer}>
+          <AddButton 
+            title="Add"
+            onPress={() => {
+              
+              setViewedContainerExpand(prev => !prev);
+            }}
+            children={<AntDesign name="plus" size={16} color="white" />} 
+          />
+          <RenameButton 
+            title="Delete"
+            onPress={() => {
+              setEditedContainerId(containerData.id);
+            }}
+            children={<AntDesign name="edit" size={16} color="black" />} 
+          />
+          <DeleteButton 
+            title="Delete"
+            onPress={() => {setViewedContainerExpand(prev => !prev)}}
+            children={<AntDesign name="delete" size={16} color="black" />} 
+          />
+          <ExpandButton
+            title=""
+            onPress={() => {setViewedContainerExpand(prev => !prev)}}
+            children={!viewedContainerExpand ? <AntDesign name="arrow-down" size={16} color="black" /> : <AntDesign name="arrow-up" size={16} color="black" />}
+          />
+        </View>
       </View>
       
       <FlatList 
@@ -126,5 +150,9 @@ const styles = StyleSheet.create({
   },
   disabled: {
     display: "none",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    gap: 5
   }
 });

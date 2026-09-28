@@ -1,10 +1,9 @@
 import { userCompartment } from "../types/userCompartment";
 import { UserItem } from "../types/userItem";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import { ExpandButton } from "./Buttons";
+import { AddButton, ExpandButton, DeleteButton, RenameButton } from "./Buttons";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
-
 
 type CompartmentProps = {
     compartmentData: userCompartment
@@ -17,24 +16,58 @@ type ItemProps = {
 
 export default function Compartment({compartmentData, viewedContainerExpand}: CompartmentProps){
     const [compartmentContainerExpand, setCompartmentContainerExpand] = useState<boolean>(false);
-
+    const [viewedCompartmentEdit, setViewedCompartmentEdit] = useState<boolean>(false);
+    
     const Item = ({itemData}: ItemProps) => (
         //style these
         <View style={compartmentContainerExpand ? styles.userItem : styles.disabled}>
-        <Text >{itemData.name}</Text>
+            <Text>{itemData.name} x{itemData.amount}</Text>
+            <View style={styles.buttonContainer}>
+                <AddButton 
+                    title="Add"
+                    onPress={() => {setCompartmentContainerExpand(prev => !prev)}}
+                    children={<AntDesign name="plus" size={16} color="white" />} 
+                />
+                <RenameButton 
+                    title="Edit"
+                    onPress={() => {setCompartmentContainerExpand(prev => !prev)}}
+                    children={<AntDesign name="edit" size={16} color="black" />} 
+                />
+                <DeleteButton 
+                    title="Delete"
+                    onPress={() => {setCompartmentContainerExpand(prev => !prev)}}
+                    children={<AntDesign name="delete" size={16} color="black" />} 
+                />
+            </View>
         </View>
-
     )
 
     return(
         <View style={viewedContainerExpand ? styles.userCompartment : styles.disabled}>
         <View style={!compartmentContainerExpand ? styles.userCompartmentControlRow : styles.userCompartmentControlRowExpanded}>
             <Text style={styles.compartmentTitle}>{compartmentData.name}</Text>
-            <ExpandButton
-                title=""
-                onPress={() => {setCompartmentContainerExpand(prev => !prev)}}
-                children={!compartmentContainerExpand ? <AntDesign name="arrow-down" size={16} color="black" /> : <AntDesign name="arrow-up" size={16} color="black" />}
-            />
+            <View style={styles.buttonContainer}>
+                <AddButton 
+                    title="Add"
+                    onPress={() => {setCompartmentContainerExpand(prev => !prev)}}
+                    children={<AntDesign name="plus" size={16} color="white" />} 
+                />
+                <RenameButton 
+                    title="Delete"
+                    onPress={() => {setViewedCompartmentEdit(prev => !prev)}}
+                    children={<AntDesign name="edit" size={16} color="black" />} 
+                />
+                <DeleteButton 
+                    title="Delete"
+                    onPress={() => {setCompartmentContainerExpand(prev => !prev)}}
+                    children={<AntDesign name="delete" size={16} color="black" />} 
+                />
+                <ExpandButton
+                    title=""
+                    onPress={() => {setCompartmentContainerExpand(prev => !prev)}}
+                    children={!compartmentContainerExpand ? <AntDesign name="arrow-down" size={16} color="black" /> : <AntDesign name="arrow-up" size={16} color="black" />}
+                />
+            </View>
         </View>
         <FlatList 
             data={compartmentData.items}
@@ -76,10 +109,15 @@ const styles = StyleSheet.create({
     },
     userItem: {
         display: "flex",
+        padding: 5,
+        flexDirection: "row",
         width: "100%",
         alignItems: "center",
+        justifyContent: "space-between",
         paddingTop: 10
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        gap: 5
     }
-
-
 })
