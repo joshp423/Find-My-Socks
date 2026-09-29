@@ -10,55 +10,50 @@ type updateDataProps = {
 }
 
 export default async function updateData({itemId, itemType, itemName, db, amount}: updateDataProps){
+    
 
-
-
-    const statement = await db.prepareAsync(
-        `UPDATE $table
-            SET name = $value
-            WHERE id = $itemId
-        `
+    const statementContainer = await db.prepareAsync(
+        'UPDATE userContainersSET name = $value WHERE id = $itemId'
+        
+    )
+    const statementCompartment = await db.prepareAsync(
+        'UPDATE userCompartments SET name = $value WHERE id = $itemId'
+        
     )
     const statementAmount = await db.prepareAsync(
-        `UPDATE $table
-            SET name = $value, amount = $amount
-            WHERE id = $itemId
-        `
+        'UPDATE userItems SET name = $value, amount = $amount WHERE id = $itemId'
     )
 
     switch(itemType) {
         case "compartment": {
             try {
-                await statement.executeAsync({
-                    $table: "userCompartments",
+                await statementCompartment.executeAsync({
                     $value: itemName,
                     $itemId: itemId
                 })
             } catch {
                 return "An error occured"
             } finally {
-                await statement.finalizeAsync();
+                await statementCompartment.finalizeAsync();
             }
         };
         case "container": {
             try {
-                await statement.executeAsync({
-                    $table: "userContainers",
+                await statementContainer.executeAsync({
                     $value: itemName,
                     $itemId: itemId
                 })
             } catch {
                 return "An error occured"
             } finally {
-                await statement.finalizeAsync();
+                await statementContainer.finalizeAsync();
             }
         };
         case "item": {
             try {
                 await statementAmount.executeAsync({
-                    $table: "userContainers",
                     $value: itemName,
-                    $amount: amount,
+                    $amount: String(amount),
                     $itemId: itemId
                 })
             } catch {

@@ -8,6 +8,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { DeleteButton, ExpandButton, RenameButton, AddButton } from "../../components/Buttons";
 import Compartment from "../../components/Compartment";
 import { EditData } from "../../components/EditRename";
+import updateData from "../../db/updateData";
 
 export function Storage() {
   const [userStorage, setUserStorage] = useState<UserContainer[] | null>(null);
@@ -43,7 +44,6 @@ export function Storage() {
       <View style={!viewedContainerExpand ? styles.userContainerControlRow : styles.userContainerControlRowExpanded}>
         {editedContainerId ? (
           <EditData 
-            onPressConfirm={() => {return}}
             onPressCancel={() => setEditedContainerId(null)}
             value={containerData.name}
           />
