@@ -20,6 +20,7 @@ export function Storage() {
   
   useEffect(() => {
     async function load(){
+      if (editedContainerId || deletedContainerId) return;
       const userData = await getUserStorage(db);
       if (userData !== "No Data Found") {
         setUserStorage(userData);
@@ -29,7 +30,7 @@ export function Storage() {
       return;
     }
     load();
-  }, [])
+  }, [editedContainerId, deletedContainerId])
 
   type ContainerProps = {
     containerData: UserContainer
@@ -46,6 +47,8 @@ export function Storage() {
           <EditData 
             onPressCancel={() => setEditedContainerId(null)}
             value={containerData.name}
+            id={editedContainerId}
+            type="container"
           />
         ) : (
           <>

@@ -13,7 +13,7 @@ export default async function updateData({itemId, itemType, itemName, db, amount
     
 
     const statementContainer = await db.prepareAsync(
-        'UPDATE userContainersSET name = $value WHERE id = $itemId'
+        'UPDATE userContainers SET name = $value WHERE id = $itemId'
         
     )
     const statementCompartment = await db.prepareAsync(

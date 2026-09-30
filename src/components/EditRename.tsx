@@ -3,40 +3,64 @@ import { Pressable, Text, StyleSheet, TextInput, View } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from 'react';
 import updateData from '../db/updateData';
-
+import * as SQLite from "expo-sqlite";
 
 type EditDataProps = {
-    onPressCancel: ((event: GestureResponderEvent) => void) | undefined
-    value: string
+    onPressCancel: ((event: GestureResponderEvent) => void) | undefined;
+    value: string;
+    id: number;
+    type: "container" | "compartment";
 }
 
 type EditDataAmountProps = {
-    onPressCancel: ((event: GestureResponderEvent) => void) | undefined
-    name: string
-    amount: number
+    onPressCancel: ((event: GestureResponderEvent) => void) | undefined;
+    name: string;
+    amount: number;
+    id: number
 }
 
-export function EditData({onPressCancel, value}: EditDataProps) {
+export function EditData({onPressCancel, value, id, type}: EditDataProps) {
     const [dataTitle, setDataTitle] = useState<string>(value)
+
+    const db = SQLite.useSQLiteContext();
     return(
         <>
             <TextInput value={dataTitle} style={styles.input} onChangeText={setDataTitle}/>
             <View style={styles.buttonContainer}>
                 <Pressable onPress={onPressCancel} style={styles.cancelButton}><AntDesign name="close" size={16} color="black" /></Pressable>
-                <Pressable onPress={updateData()} style={styles.submitButton}><AntDesign name="check" size={16} color="black" /></Pressable>
+                <Pressable 
+                    onPress={async() => {
+                        await updateData({itemId: id, itemName: dataTitle, itemType: type, db })
+                        onPressCancel;
+                    }} 
+                    style={styles.submitButton}
+                >
+                    <AntDesign name="check" size={16} color="black" />
+                </Pressable>
             </View>
         </>
     )
 }
 
-export function EditDataAmount({onPressCancel, name, amount}: EditDataAmountProps) {
+export function EditDataAmount({onPressCancel, name, amount, id}: EditDataAmountProps) {
     //need numeric confirmation
+
+    const [dataTitle, setDataTitle] = useState<string>(name)
+    const [dataAmount, setDataAmount] = useState<string>(String(amount))
+
+    const db = SQLite.useSQLiteContext();
     return(
         <View>
-            <TextInput value={name}/>
-            <TextInput value={String(amount)} keyboardType="numeric" /> 
-            <Pressable onPress={}><AntDesign name="x" size={16} color="black" /></Pressable>
-            <Pressable onPress={onPressCancel}><AntDesign name="check" size={16} color="black" /></Pressable>
+            <TextInput value={name} style={styles.input} onChangeText={setDataTitle}/>
+            <TextInput value={String(amount)} keyboardType="numeric" onChangeText={setDataAmount}/> 
+            <Pressable onPress={onPressCancel}><AntDesign name="x" size={16} color="black" /></Pressable>
+            <Pressable 
+                onPress={async() => {
+                    await updateData({itemId: id, itemName: dataTitle, itemType: "item", db, amount: Number(dataAmount)});
+                    onPressCancel;
+                }}
+
+            ><AntDesign name="check" size={16} color="black" /></Pressable>
         </View>
     )
 }
