@@ -1,25 +1,40 @@
 import { Text } from "@react-navigation/elements";
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import getUserStorage from "../../db/getUserStorage";
 import * as SQLite from "expo-sqlite";
 import { UserContainer } from "../../types/userContainer";
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { DeleteButton, ExpandButton, RenameButton, AddButton } from "../../components/Buttons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import {
+  DeleteButton,
+  ExpandButton,
+  RenameButton,
+  AddButton,
+} from "../../components/Buttons";
 import Compartment from "../../components/Compartment";
 import { EditData } from "../../components/EditRename";
-import updateData from "../../db/updateData";
 
 export function Storage() {
   const [userStorage, setUserStorage] = useState<UserContainer[] | null>(null);
-  const [viewedContainerExpand, setViewedContainerExpand] = useState<boolean>(false);
-  const [editedContainerId, setEditedContainerId] = useState<number | null>(null);
-  const [deletedContainerId, setDeletedContainerId] = useState<number | null>(null);
+  const [viewedContainerExpand, setViewedContainerExpand] =
+    useState<boolean>(false);
+  const [editedContainerId, setEditedContainerId] = useState<number | null>(
+    null,
+  );
+  const [deletedContainerId, setDeletedContainerId] = useState<number | null>(
+    null,
+  );
 
   const db = SQLite.useSQLiteContext();
-  
+
   useEffect(() => {
-    async function load(){
+    async function load() {
       if (editedContainerId || deletedContainerId) return;
       const userData = await getUserStorage(db);
       if (userData !== "No Data Found") {
@@ -30,22 +45,24 @@ export function Storage() {
       return;
     }
     load();
-  }, [editedContainerId, deletedContainerId])
+  }, [editedContainerId, deletedContainerId]);
 
   type ContainerProps = {
-    containerData: UserContainer
+    containerData: UserContainer;
   };
 
-
-  
-
-  const Container = ({containerData}: ContainerProps) => (
-    //style these
+  const Container = ({ containerData }: ContainerProps) => (
     <View style={styles.userContainer}>
-      <View style={!viewedContainerExpand ? styles.userContainerControlRow : styles.userContainerControlRowExpanded}>
+      <View
+        style={
+          !viewedContainerExpand
+            ? styles.userContainerControlRow
+            : styles.userContainerControlRowExpanded
+        }
+      >
         {editedContainerId ? (
-          <EditData 
-            onPressCancel={() => setEditedContainerId(null)}
+          <EditData
+            setEditedContainerId={setEditedContainerId}
             value={containerData.name}
             id={editedContainerId}
             type="container"
@@ -54,59 +71,73 @@ export function Storage() {
           <>
             <Text style={styles.containerTitle}>{containerData.name}</Text>
             <View style={styles.buttonContainer}>
-              <AddButton 
+              <AddButton
                 title="Add"
                 onPress={() => {
-                  setViewedContainerExpand(prev => !prev);
+                  setViewedContainerExpand((prev) => !prev);
                 }}
-                children={<AntDesign name="plus" size={16} color="white" />} 
+                children={<AntDesign name="plus" size={16} color="white" />}
               />
-              <RenameButton 
+              <RenameButton
                 title="Delete"
                 onPress={() => {
                   setEditedContainerId(containerData.id);
                 }}
-                children={<AntDesign name="edit" size={16} color="black" />} 
+                children={<AntDesign name="edit" size={16} color="black" />}
               />
-              <DeleteButton 
+              <DeleteButton
                 title="Delete"
-                onPress={() => {setDeletedContainerId(containerData.id)}}
-                children={<AntDesign name="delete" size={16} color="black" />} 
+                onPress={() => {
+                  setDeletedContainerId(containerData.id);
+                }}
+                children={<AntDesign name="delete" size={16} color="black" />}
               />
               <ExpandButton
                 title=""
-                onPress={() => {setViewedContainerExpand(prev => !prev)}}
-                children={!viewedContainerExpand ? <AntDesign name="arrow-down" size={16} color="black" /> : <AntDesign name="arrow-up" size={16} color="black" />}
+                onPress={() => {
+                  setViewedContainerExpand((prev) => !prev);
+                }}
+                children={
+                  !viewedContainerExpand ? (
+                    <AntDesign name="arrow-down" size={16} color="black" />
+                  ) : (
+                    <AntDesign name="arrow-up" size={16} color="black" />
+                  )
+                }
               />
             </View>
           </>
         )}
       </View>
-      <FlatList 
+      <FlatList
         data={containerData.compartments}
-        renderItem={({item: compartment}) => <Compartment compartmentData={compartment} viewedContainerExpand={viewedContainerExpand} /> }
+        renderItem={({ item: compartment }) => (
+          <Compartment
+            compartmentData={compartment}
+            viewedContainerExpand={viewedContainerExpand}
+          />
+        )}
       />
     </View>
   );
 
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Manage Storage</Text>
-      {userStorage ? (
-        <FlatList
-          style={styles.flatListUserData}
-          data={userStorage}
-          renderItem={({item: container}) =>
-            <Container 
-              containerData={container}
-            />
-          }
-        />
-      ) :  (
-        <Text>No Data</Text>
-      )}
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Manage Storage</Text>
+        {userStorage ? (
+          <FlatList
+            style={styles.flatListUserData}
+            data={userStorage}
+            renderItem={({ item: container }) => (
+              <Container containerData={container} />
+            )}
+          />
+        ) : (
+          <Text>No Data</Text>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -117,8 +148,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
     width: "100%",
-    backgroundColor: '#C5D6D8',
-    padding: 20
+    backgroundColor: "#C5D6D8",
+    padding: 20,
   },
   row: {
     flexDirection: "row",
@@ -131,7 +162,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   flatListUserData: {
-    width: "100%"
+    width: "100%",
   },
   userContainer: {
     marginTop: 30,
@@ -148,7 +179,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    minHeight: 50
+    minHeight: 50,
   },
   userContainerControlRowExpanded: {
     width: "100%",
@@ -158,16 +189,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 15,
     borderBottomWidth: 0.5,
-    minHeight: 50
+    minHeight: 50,
   },
-  containerTitle:{
-    fontSize: 20
+  containerTitle: {
+    fontSize: 20,
   },
   disabled: {
     display: "none",
   },
   buttonContainer: {
     flexDirection: "row",
-    gap: 5
-  }
+    gap: 5,
+  },
 });

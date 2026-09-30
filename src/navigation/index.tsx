@@ -17,8 +17,6 @@ import { Profile } from "./screens/Profile";
 import { Storage } from "./screens/Storage";
 import { fa } from "zod/v4/locales";
 
-
-
 const HomeTabs = createBottomTabNavigator({
   screenOptions: {
     tabBarStyle: {
@@ -36,7 +34,7 @@ const HomeTabs = createBottomTabNavigator({
     tabBarActiveBackgroundColor: "#ABDF75",
     tabBarInactiveBackgroundColor: "#60695C",
     tabBarActiveTintColor: "black",
-    tabBarInactiveTintColor: "white"
+    tabBarInactiveTintColor: "white",
   },
   screens: {
     Home: createBottomTabScreen({
@@ -53,7 +51,7 @@ const HomeTabs = createBottomTabNavigator({
             }}
           />
         ),
-        headerShown: false
+        headerShown: false,
       },
     }),
     ManageStorage: createBottomTabScreen({

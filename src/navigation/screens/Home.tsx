@@ -1,5 +1,12 @@
 import { Button as NavButton, Text } from "@react-navigation/elements";
-import { StyleSheet, View, TextInput, Button, FlatList, TouchableWithoutFeedback, Keyboard, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  FlatList,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { CreateProfile } from "./CreateProfile";
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as SQLite from "expo-sqlite";
@@ -7,7 +14,7 @@ import { useEffect, useState } from "react";
 import search from "../../db/search";
 import { type ItemSearchResults } from "../../types/itemSearchResults";
 import { DefaultButton } from "../../components/Buttons";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export function Home() {
   const [userProfileCheck, setUserProfileCheck] = useState<boolean>(false);
@@ -40,19 +47,29 @@ export function Home() {
   }, []);
 
   type ItemProps = {
-    itemName: string,  
-    itemAmount: number,
-    compartmentName: string,
-    containerName: string
+    itemName: string;
+    itemAmount: number;
+    compartmentName: string;
+    containerName: string;
   };
 
-  const Item = ({itemName, itemAmount, compartmentName, containerName}: ItemProps) => (
+  const Item = ({
+    itemName,
+    itemAmount,
+    compartmentName,
+    containerName,
+  }: ItemProps) => (
     //style these
     <View style={styles.resultsList}>
       <Text style={styles.resultsContainerText}>{containerName}</Text>
       <AntDesign name="arrow-down" size={16} color="black" />
       <Text style={styles.resultsCompartmentText}>{compartmentName}</Text>
-      <AntDesign name="arrow-down" size={16} color="black" style={styles.resultsArrow}/>
+      <AntDesign
+        name="arrow-down"
+        size={16}
+        color="black"
+        style={styles.resultsArrow}
+      />
       <View style={styles.resultsItemContainer}>
         <Text style={styles.resultsItemText}>{itemName}</Text>
         <Text style={styles.resultsItemAmountText}>Amount: {itemAmount}</Text>
@@ -68,55 +85,60 @@ export function Home() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Text style={styles.title}>Find My Socks</Text>
-          <View style={styles.searchBarContainer}>
-            <TextInput
-              onChangeText={onChangeSearchTerms}
-              editable
-              maxLength={20}
-              style={styles.input}
-              placeholder="Search for item"
+        <View style={styles.searchBarContainer}>
+          <TextInput
+            onChangeText={onChangeSearchTerms}
+            editable
+            maxLength={20}
+            style={styles.input}
+            placeholder="Search for item"
+          />
+          <View>
+            <DefaultButton
+              onPress={async () => {
+                setConfirmSearch(true);
+                const searchResults = await search(searchTerms, db);
+                setSearchResults(searchResults);
+                return;
+              }}
+              title="Search"
             />
-            <View>
-              <DefaultButton 
-                onPress={ async () => {
-                  setConfirmSearch(true);
-                  const searchResults = await search(searchTerms, db);
-                  setSearchResults(searchResults);
-                  return;
-                }}
-                title="Search"
-              />
-            </View>
           </View>
-          {confirmSearch ? (
-            <View style={styles.searchResultsContainer}>
-              {searchResults !== "No Item Found" ? (
-                <View style={styles.foundSearchResults}>
-                  <Text style={styles.searchTermTitle}>Here's where to find {searchTerms}:</Text>
-                  <View style={styles.searchResultsScrollContainer}>
-                    <FlatList
-                      data={searchResults}
-                      renderItem={({item}) => 
-                        <Item
-                          itemName={item.name}
-                          itemAmount={item.amount}
-                          compartmentName={item.parent.name}
-                          containerName={item.parent.parent.name}
-                        />
-                      }
-                    />
-                  </View>
+        </View>
+        {confirmSearch ? (
+          <View style={styles.searchResultsContainer}>
+            {searchResults !== "No Item Found" ? (
+              <View style={styles.foundSearchResults}>
+                <Text style={styles.searchTermTitle}>
+                  Here's where to find {searchTerms}:
+                </Text>
+                <View style={styles.searchResultsScrollContainer}>
+                  <FlatList
+                    data={searchResults}
+                    renderItem={({ item }) => (
+                      <Item
+                        itemName={item.name}
+                        itemAmount={item.amount}
+                        compartmentName={item.parent.name}
+                        containerName={item.parent.parent.name}
+                      />
+                    )}
+                  />
                 </View>
-              ) : (
-                <View style={styles.searchBarContainer}>
-                  <Text>Item Not Found</Text>
-                </View>
-              )}
-            </View>
-          ) : <></> }
+              </View>
+            ) : (
+              <View style={styles.searchBarContainer}>
+                <Text>Item Not Found</Text>
+              </View>
+            )}
+          </View>
+        ) : (
+          <></>
+        )}
         <View style={styles.navButtons}>
-          <NavButton 
-            screen="Profile" params={{ user: username }}
+          <NavButton
+            screen="Profile"
+            params={{ user: username }}
             style={styles.navButton}
             color="black"
           >
@@ -135,7 +157,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
     width: "100%",
-    backgroundColor: '#C5D6D8',
+    backgroundColor: "#C5D6D8",
   },
   input: {
     width: "100%",
@@ -143,14 +165,14 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 16,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   title: {
     marginTop: 60,
     fontSize: 30,
     alignSelf: "flex-start",
     paddingLeft: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   searchBarContainer: {
     width: "100%",
@@ -166,40 +188,38 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   navButton: {
-    backgroundColor: '#ABDF75',
+    backgroundColor: "#ABDF75",
     paddingVertical: 10,
     paddingHorizontal: 40,
     borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#60695C',
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#60695C",
     borderStyle: "solid",
     borderWidth: 1,
   },
   searchResultsContainer: {
     marginTop: 30,
     width: "100%",
-    justifyContent:"center",
-    alignContent:"flex-start",
+    justifyContent: "center",
+    alignContent: "flex-start",
     paddingLeft: 10,
     paddingRight: 10,
     borderWidth: 0,
   },
   foundSearchResults: {
     gap: 10,
-    justifyContent:"center",
-    alignContent:"flex-start",
+    justifyContent: "center",
+    alignContent: "flex-start",
   },
   searchTermTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    borderBottomWidth: 0.5
+    borderBottomWidth: 0.5,
   },
-  searchResultsScrollContainer: {
-    
-  },
+  searchResultsScrollContainer: {},
   resultsList: {
-    gap: 10, 
+    gap: 10,
     borderRadius: 12,
     paddingTop: 10,
     paddingBottom: 10,
@@ -220,7 +240,7 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 5,
     borderWidth: 0.5,
-    borderRadius: 12
+    borderRadius: 12,
   },
   resultsItemText: {
     fontSize: 14,
@@ -231,7 +251,6 @@ const styles = StyleSheet.create({
     color: "black",
   },
   resultsArrow: {
-    alignSelf: "center"
-  }
-
+    alignSelf: "center",
+  },
 });
