@@ -26,28 +26,28 @@ export default function Item({itemData, compartmentContainerExpand}: ItemProps) 
                 id={editedItemId}
                 amount={itemData.amount}
             />
-        ) : (
-            <>
-                <Text>{itemData.name} x{itemData.amount}</Text>
-                <View style={styles.buttonContainer}>
-                    <AddButton
-                        title="Add"
-                        onPress={() => {return}}
-                        children={<AntDesign name="plus" size={16} color="white" />}
-                    />
-                    <RenameButton
-                        title="Edit"
-                        onPress={() => {return}}
-                        children={<AntDesign name="edit" size={16} color="black" />}
-                    />
-                    <DeleteButton
-                        title="Delete"
-                        onPress={() => {return}}
-                        children={<AntDesign name="delete" size={16} color="black" />}
-                    />
-                </View>
-            </>
-        )}
+    ) : (
+        <>
+            <Text>{itemData.name} x{itemData.amount}</Text>
+            <View style={styles.buttonContainer}>
+                <AddButton
+                    title="Add"
+                    onPress={() => {return}}
+                    children={<AntDesign name="plus" size={16} color="white" />}
+                />
+                <RenameButton
+                    title="Edit"
+                    onPress={() => {return}}
+                    children={<AntDesign name="edit" size={16} color="black" />}
+                />
+                <DeleteButton
+                    title="Delete"
+                    onPress={() => {return}}
+                    children={<AntDesign name="delete" size={16} color="black" />}
+                />
+            </View>
+        </>
+    )}
       </View>
     )
 }
