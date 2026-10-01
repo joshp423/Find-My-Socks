@@ -1,18 +1,14 @@
 import { userCompartment } from "../types/userCompartment";
-import { UserItem } from "../types/userItem";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { AddButton, ExpandButton, DeleteButton, RenameButton } from "./Buttons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useState } from "react";
 import { EditData } from "./EditRename";
+import Item from "./Item";
 
 type CompartmentProps = {
   compartmentData: userCompartment;
   viewedContainerExpand: boolean;
-};
-
-type ItemProps = {
-  itemData: UserItem;
 };
 
 export default function Compartment({
@@ -23,38 +19,6 @@ export default function Compartment({
     useState<boolean>(false);
   const [editedCompartmentId, setEditedCompartmentId] = useState<number | null>(
     null,
-  );
-
-  const Item = ({ itemData }: ItemProps) => (
-    //style these
-    <View
-      style={compartmentContainerExpand ? styles.userItem : styles.disabled}
-    >
-      <Text>
-        {itemData.name} x{itemData.amount}
-      </Text>
-      <View style={styles.buttonContainer}>
-        <AddButton
-          title="Add"
-          onPress={() => {
-            setCompartmentContainerExpand((prev) => !prev);
-          }}
-          children={<AntDesign name="plus" size={16} color="white" />}
-        />
-        <RenameButton
-          title="Edit"
-          onPress={() => {return}}
-          children={<AntDesign name="edit" size={16} color="black" />}
-        />
-        <DeleteButton
-          title="Delete"
-          onPress={() => {
-            setCompartmentContainerExpand((prev) => !prev);
-          }}
-          children={<AntDesign name="delete" size={16} color="black" />}
-        />
-      </View>
-    </View>
   );
 
   return (
@@ -119,7 +83,7 @@ export default function Compartment({
       </View>
       <FlatList
         data={compartmentData.items}
-        renderItem={({ item }) => <Item itemData={item} />}
+        renderItem={({ item }) => <Item itemData={item} compartmentContainerExpand/>}
       />
     </View>
   );
