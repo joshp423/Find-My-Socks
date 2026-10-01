@@ -62,7 +62,7 @@ export function Storage() {
       >
         {editedContainerId ? (
           <EditData
-            setEditedContainerId={setEditedContainerId}
+            setEditedPropertyId={setEditedContainerId}
             value={containerData.name}
             id={editedContainerId}
             type="container"

@@ -6,21 +6,21 @@ import updateData from "../db/updateData";
 import * as SQLite from "expo-sqlite";
 
 type EditDataProps = {
-  setEditedContainerId: React.Dispatch<React.SetStateAction<number | null>>;
+  setEditedPropertyId: React.Dispatch<React.SetStateAction<number | null>>;
   value: string;
   id: number;
   type: "container" | "compartment";
 };
 
 type EditDataAmountProps = {
-  setEditedContainerId: React.Dispatch<React.SetStateAction<number | null>>;
+  setEditedPropertyId: React.Dispatch<React.SetStateAction<number | null>>;
   name: string;
   amount: number;
   id: number;
 };
 
 export function EditData({
-  setEditedContainerId,
+  setEditedPropertyId,
   value,
   id,
   type,
@@ -31,7 +31,7 @@ export function EditData({
 
   async function handleEditSubmit() {
     await updateData({ itemId: id, itemName: dataTitle, itemType: type, db });
-    setEditedContainerId(null);
+    setEditedPropertyId(null);
   }
 
   return (
@@ -46,7 +46,7 @@ export function EditData({
       />
       <View style={styles.buttonContainer}>
         <Pressable
-          onPress={() => setEditedContainerId(null)}
+          onPress={() => setEditedPropertyId(null)}
           style={styles.cancelButton}
         >
           <AntDesign name="close" size={16} color="black" />
@@ -60,7 +60,7 @@ export function EditData({
 }
 
 export function EditDataAmount({
-  setEditedContainerId,
+  setEditedPropertyId,
   name,
   amount,
   id,
@@ -80,7 +80,7 @@ export function EditDataAmount({
       db,
       amount: Number(dataAmount),
     });
-    setEditedContainerId(null);
+    setEditedPropertyId(null);
   }
   return (
     <View>
@@ -100,7 +100,7 @@ export function EditDataAmount({
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
       />
-      <Pressable onPress={() => setEditedContainerId(null)}>
+      <Pressable onPress={() => setEditedPropertyId(null)}>
         <AntDesign name="x" size={16} color="black" />
       </Pressable>
       <Pressable onPress={handleEditSubmit}>

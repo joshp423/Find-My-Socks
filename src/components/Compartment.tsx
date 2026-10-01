@@ -4,6 +4,7 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 import { AddButton, ExpandButton, DeleteButton, RenameButton } from "./Buttons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useState } from "react";
+import { EditData } from "./EditRename";
 
 type CompartmentProps = {
   compartmentData: userCompartment;
@@ -20,8 +21,9 @@ export default function Compartment({
 }: CompartmentProps) {
   const [compartmentContainerExpand, setCompartmentContainerExpand] =
     useState<boolean>(false);
-  const [viewedCompartmentEdit, setViewedCompartmentEdit] =
-    useState<boolean>(false);
+  const [editedCompartmentId, setEditedCompartmentId] = useState<number | null>(
+    null,
+  );
 
   const Item = ({ itemData }: ItemProps) => (
     //style these
@@ -41,9 +43,7 @@ export default function Compartment({
         />
         <RenameButton
           title="Edit"
-          onPress={() => {
-            setCompartmentContainerExpand((prev) => !prev);
-          }}
+          onPress={() => {return}}
           children={<AntDesign name="edit" size={16} color="black" />}
         />
         <DeleteButton
@@ -68,43 +68,54 @@ export default function Compartment({
             : styles.userCompartmentControlRowExpanded
         }
       >
-        <Text style={styles.compartmentTitle}>{compartmentData.name}</Text>
-        <View style={styles.buttonContainer}>
-          <AddButton
-            title="Add"
-            onPress={() => {
-              setCompartmentContainerExpand((prev) => !prev);
-            }}
-            children={<AntDesign name="plus" size={16} color="white" />}
+        {editedCompartmentId ? (
+          <EditData
+            setEditedPropertyId={setEditedCompartmentId}
+            value={compartmentData.name}
+            id={editedCompartmentId}
+            type="compartment"
           />
-          <RenameButton
-            title="Delete"
-            onPress={() => {
-              setViewedCompartmentEdit((prev) => !prev);
-            }}
-            children={<AntDesign name="edit" size={16} color="black" />}
-          />
-          <DeleteButton
-            title="Delete"
-            onPress={() => {
-              setCompartmentContainerExpand((prev) => !prev);
-            }}
-            children={<AntDesign name="delete" size={16} color="black" />}
-          />
-          <ExpandButton
-            title=""
-            onPress={() => {
-              setCompartmentContainerExpand((prev) => !prev);
-            }}
-            children={
-              !compartmentContainerExpand ? (
-                <AntDesign name="arrow-down" size={16} color="black" />
-              ) : (
-                <AntDesign name="arrow-up" size={16} color="black" />
-              )
-            }
-          />
-        </View>
+        ) : (
+          <>
+            <Text style={styles.compartmentTitle}>{compartmentData.name}</Text>
+            <View style={styles.buttonContainer}>
+              <AddButton
+                title="Add"
+                onPress={() => {
+                  setCompartmentContainerExpand((prev) => !prev);
+                }}
+                children={<AntDesign name="plus" size={16} color="white" />}
+              />
+              <RenameButton
+                title="Delete"
+                onPress={() => {
+                  setEditedCompartmentId(compartmentData.id);
+                }}
+                children={<AntDesign name="edit" size={16} color="black" />}
+              />
+              <DeleteButton
+                title="Delete"
+                onPress={() => {
+                  setCompartmentContainerExpand((prev) => !prev);
+                }}
+                children={<AntDesign name="delete" size={16} color="black" />}
+              />
+              <ExpandButton
+                title=""
+                onPress={() => {
+                  setCompartmentContainerExpand((prev) => !prev);
+                }}
+                children={
+                  !compartmentContainerExpand ? (
+                    <AntDesign name="arrow-down" size={16} color="black" />
+                  ) : (
+                    <AntDesign name="arrow-up" size={16} color="black" />
+                  )
+                }
+              />
+            </View>
+          </>
+        )}
       </View>
       <FlatList
         data={compartmentData.items}
