@@ -74,7 +74,6 @@ export function Storage() {
               setEditedPropertyId={setDeletedContainerId}
               itemId={containerData.id}
               itemType="container"
-              db={db}
             />
           </>
         ) : (

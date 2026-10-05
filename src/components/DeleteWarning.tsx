@@ -1,22 +1,21 @@
 import { Pressable, Text, StyleSheet, View } from "react-native";
-import { GestureResponderEvent } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { type SQLiteDatabase } from "expo-sqlite";
 import deleteData from "../db/deleteData";
+import * as SQLite from "expo-sqlite";
 
 type DeleteWarningProps = {
   setEditedPropertyId: React.Dispatch<React.SetStateAction<number | null>>;
   itemId: number;
   itemType: "container" | "compartment" | "item";
-  db: SQLiteDatabase;
 };
 export function DeleteWarning({
   setEditedPropertyId,
   itemId,
   itemType,
-  db
+
 }: DeleteWarningProps) {
 
+  const db = SQLite.useSQLiteContext();
   
   async function handleEditSubmit() {
     await deleteData({itemId, itemType, db});

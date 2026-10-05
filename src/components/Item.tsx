@@ -4,6 +4,7 @@ import { AddButton, DeleteButton, RenameButton } from "./Buttons";
 import { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { EditDataAmount } from "./EditRename";
+import { DeleteWarning } from "./DeleteWarning";
 
 type ItemProps = {
   itemData: UserItem;
@@ -15,7 +16,7 @@ export default function Item({
   compartmentContainerExpand,
 }: ItemProps) {
   const [editedItemId, setEditedItemId] = useState<number | null>(null);
-
+  const [deletedItemId, setDeletedItemId] = useState<number | null>(null);
   return (
     <View
       style={compartmentContainerExpand ? styles.userItem : styles.disabled}
@@ -27,6 +28,14 @@ export default function Item({
           id={editedItemId}
           amount={itemData.amount}
         />
+      ) : deletedItemId ? (
+        <>
+          <DeleteWarning 
+            setEditedPropertyId={setDeletedItemId}
+            itemId={itemData.id}
+            itemType="item"
+          />
+        </>
       ) : (
         <>
           <Text>

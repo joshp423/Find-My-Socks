@@ -5,6 +5,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useState } from "react";
 import { EditData } from "./EditRename";
 import Item from "./Item";
+import { DeleteWarning } from "./DeleteWarning";
 
 type CompartmentProps = {
   compartmentData: userCompartment;
@@ -18,6 +19,9 @@ export default function Compartment({
   const [compartmentContainerExpand, setCompartmentContainerExpand] =
     useState<boolean>(false);
   const [editedCompartmentId, setEditedCompartmentId] = useState<number | null>(
+    null,
+  );
+  const [deletedCompartmentId, setDeletedCompartmentId] = useState<number | null>(
     null,
   );
 
@@ -39,7 +43,15 @@ export default function Compartment({
             id={editedCompartmentId}
             type="compartment"
           />
-        ) : (
+        ) : deletedCompartmentId ? (
+          <>
+            <DeleteWarning 
+              setEditedPropertyId={setDeletedCompartmentId}
+              itemId={compartmentData.id}
+              itemType="compartment"
+            />
+          </> 
+        ) : (           
           <>
             <Text style={styles.compartmentTitle}>{compartmentData.name}</Text>
             <View style={styles.buttonContainer}>
