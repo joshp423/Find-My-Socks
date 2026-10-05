@@ -21,9 +21,9 @@ export default function Compartment({
   const [editedCompartmentId, setEditedCompartmentId] = useState<number | null>(
     null,
   );
-  const [deletedCompartmentId, setDeletedCompartmentId] = useState<number | null>(
-    null,
-  );
+  const [deletedCompartmentId, setDeletedCompartmentId] = useState<
+    number | null
+  >(null);
 
   return (
     <View
@@ -45,13 +45,13 @@ export default function Compartment({
           />
         ) : deletedCompartmentId ? (
           <>
-            <DeleteWarning 
+            <DeleteWarning
               setEditedPropertyId={setDeletedCompartmentId}
               itemId={compartmentData.id}
               itemType="compartment"
             />
-          </> 
-        ) : (           
+          </>
+        ) : (
           <>
             <Text style={styles.compartmentTitle}>{compartmentData.name}</Text>
             <View style={styles.buttonContainer}>

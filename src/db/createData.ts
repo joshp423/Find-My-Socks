@@ -1,30 +1,30 @@
 import { type SQLiteDatabase } from "expo-sqlite";
 
-type updateDataProps = {
-  itemId: number;
-  itemType: "container" | "compartment" | "item";
+type createDataProps = {
   itemName: string;
-  amount?: number;
+  itemType: "container" | "compartment" | "item";
+  itemAmount?: number;
+  parentId?: number;
   db: SQLiteDatabase;
 };
 
-export default async function updateData({
-  itemId,
-  itemType,
+export default async function createData({
   itemName,
+  itemType,
+  itemAmount,
+  parentId,
   db,
-  amount,
-}: updateDataProps) {
+}: createDataProps) {
   switch (itemType) {
     case "compartment": {
+      if (!parentId) return;
       const statementCompartment = await db.prepareAsync(
-        "UPDATE userCompartments SET name = $value WHERE id = $itemId",
+        "INSERT INTO userCompartments (parentID, name) VALUES ($parentID, $itemName)",
       );
-
       try {
         await statementCompartment.executeAsync({
-          $value: itemName,
-          $itemId: itemId,
+          $itemName: itemName,
+          $parentID: parentId,
         });
       } catch {
         return "An error occured";
@@ -35,12 +35,11 @@ export default async function updateData({
     }
     case "container": {
       const statementContainer = await db.prepareAsync(
-        "UPDATE userContainers SET name = $value WHERE id = $itemId",
+        "INSERT INTO userContainers (name) VALUES ($itemName)",
       );
       try {
         await statementContainer.executeAsync({
-          $value: itemName,
-          $itemId: itemId,
+          $itemName: itemName,
         });
       } catch {
         return "An error occured";
@@ -50,14 +49,15 @@ export default async function updateData({
       break;
     }
     case "item": {
+      if (!parentId || !itemAmount) return;
       const statementAmount = await db.prepareAsync(
-        "UPDATE userItems SET name = $value, amount = $amount WHERE id = $itemId",
+        "INSERT INTO userItems (parentID, name, amount) VALUES ($parentID, $itemName, $amount)",
       );
       try {
         await statementAmount.executeAsync({
-          $value: itemName,
-          $amount: String(amount),
-          $itemId: itemId,
+          $itemName: itemName,
+          $parentID: parentId,
+          $amount: itemAmount,
         });
       } catch {
         return "An error occured";

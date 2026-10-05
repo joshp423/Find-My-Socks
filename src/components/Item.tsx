@@ -30,7 +30,7 @@ export default function Item({
         />
       ) : deletedItemId ? (
         <>
-          <DeleteWarning 
+          <DeleteWarning
             setEditedPropertyId={setDeletedItemId}
             itemId={itemData.id}
             itemType="item"

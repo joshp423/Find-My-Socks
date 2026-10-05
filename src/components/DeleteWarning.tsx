@@ -12,20 +12,21 @@ export function DeleteWarning({
   setEditedPropertyId,
   itemId,
   itemType,
-
 }: DeleteWarningProps) {
-
   const db = SQLite.useSQLiteContext();
-  
+
   async function handleEditSubmit() {
-    await deleteData({itemId, itemType, db});
+    await deleteData({ itemId, itemType, db });
     setEditedPropertyId(null);
   }
   return (
     <View style={styles.deleteWarningView}>
-      <Text style={{fontSize: 20}}>Delete Data?</Text>
+      <Text style={{ fontSize: 20 }}>Delete Data?</Text>
       <View style={styles.buttonContainer}>
-        <Pressable onPress={() => setEditedPropertyId(null)} style={styles.cancelButton}>
+        <Pressable
+          onPress={() => setEditedPropertyId(null)}
+          style={styles.cancelButton}
+        >
           <AntDesign name="close" size={16} color="black" />
         </Pressable>
         <Pressable onPress={handleEditSubmit} style={styles.submitButton}>

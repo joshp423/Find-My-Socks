@@ -20,7 +20,7 @@ import {
 import Compartment from "../../components/Compartment";
 import { EditData } from "../../components/EditRename";
 import { DeleteWarning } from "../../components/DeleteWarning";
-
+import { CreateNew } from "../../components/CreateNew";
 export function Storage() {
   const [userStorage, setUserStorage] = useState<UserContainer[] | null>(null);
   const [viewedContainerExpand, setViewedContainerExpand] =
@@ -31,6 +31,7 @@ export function Storage() {
   const [deletedContainerId, setDeletedContainerId] = useState<number | null>(
     null,
   );
+  const [newContainerToggle, setNewContainerToggle] = useState<boolean>(false);
 
   const db = SQLite.useSQLiteContext();
 
@@ -76,6 +77,13 @@ export function Storage() {
               itemType="container"
             />
           </>
+        ) : newContainerToggle ? (
+          <>
+            <CreateNew
+              setEditedPropertyToggle={setNewContainerToggle}
+              type="container"
+            />
+          </>
         ) : (
           <>
             <Text style={styles.containerTitle}>{containerData.name}</Text>
@@ -83,7 +91,7 @@ export function Storage() {
               <AddButton
                 title="Add"
                 onPress={() => {
-                  setViewedContainerExpand((prev) => !prev);
+                  setNewContainerToggle(true);
                 }}
                 children={<AntDesign name="plus" size={16} color="white" />}
               />
