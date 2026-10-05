@@ -14,60 +14,42 @@ export default async function deleteData({
   itemName,
   db,
 }: updateDataProps) {
-  const statementContainer = await db.prepareAsync(
-    `DELETE userContainers 
-        JOIN userCompartments
-        ON userCompartments.parentId=userContainers.id
-        JOIN userItems
-        ON userItems.parentId=userCompartments.id
-        WHERE id = $itemId`,
-  );
-  const statementCompartment = await db.prepareAsync(
-    `DELETE userCompartments
-        JOIN userItems.parentId=userCompartments.id
-        WHERE id = $itemId`,
-  );
-  const statementItem = await db.prepareAsync(
-    "DELETE userItems WHERE id = $itemId",
-  );
-
   switch (itemType) {
     case "compartment": {
       try {
-        await statementCompartment.executeAsync({
-          $value: itemName,
-          $itemId: itemId,
-        });
+        await db.execAsync(
+          `DELETE FROM userItems WHERE parentID = ${itemId};
+          DELETE FROM userCompartments WHERE id = ${itemId};`,
+        );
       } catch {
+        await db.execAsync("ROLLBACK"); //rollback on error
         return "An error occured";
-      } finally {
-        await statementCompartment.finalizeAsync();
       }
       break;
     }
     case "container": {
       try {
-        await statementContainer.executeAsync({
-          $value: itemName,
-          $itemId: itemId,
-        });
+        await db.execAsync(
+          //use transaction and execAsnyc for multi-queries, also use template literal
+          `BEGIN;
+          DELETE FROM userItems WHERE parentId IN
+            (SELECT id FROM userCompartments WHERE parentId = ${itemId});
+          DELETE FROM userCompartments WHERE parentID = ${itemId};
+          DELETE FROM userContainers WHERE id = ${itemId};
+          COMMIT;`,
+        );
       } catch {
+        await db.execAsync("ROLLBACK"); //rollback on error
         return "An error occured";
-      } finally {
-        await statementContainer.finalizeAsync();
       }
       break;
     }
     case "item": {
       try {
-        await statementItem.executeAsync({
-          $value: itemName,
-          $itemId: itemId,
-        });
+        await db.execAsync(`DELETE FROM userItems WHERE id = ${itemId}`);
       } catch {
+        await db.execAsync("ROLLBACK"); //rollback on error
         return "An error occured";
-      } finally {
-        await statementItem.finalizeAsync();
       }
       break;
     }
