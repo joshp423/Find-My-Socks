@@ -19,6 +19,7 @@ import {
 } from "../../components/Buttons";
 import Compartment from "../../components/Compartment";
 import { EditData } from "../../components/EditRename";
+import { DeleteWarning } from "../../components/DeleteWarning";
 
 export function Storage() {
   const [userStorage, setUserStorage] = useState<UserContainer[] | null>(null);
@@ -67,6 +68,15 @@ export function Storage() {
             id={editedContainerId}
             type="container"
           />
+        ) : deletedContainerId ? (
+          <>
+            <DeleteWarning
+              setEditedPropertyId={setDeletedContainerId}
+              itemId={containerData.id}
+              itemType="container"
+              db={db}
+            />
+          </>
         ) : (
           <>
             <Text style={styles.containerTitle}>{containerData.name}</Text>

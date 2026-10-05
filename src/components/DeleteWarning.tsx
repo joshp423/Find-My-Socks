@@ -1,24 +1,35 @@
 import { Pressable, Text, StyleSheet, View } from "react-native";
 import { GestureResponderEvent } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { type SQLiteDatabase } from "expo-sqlite";
+import deleteData from "../db/deleteData";
 
 type DeleteWarningProps = {
-  onPressConfirm: ((event: GestureResponderEvent) => void) | undefined;
-  onPressCancel: ((event: GestureResponderEvent) => void) | undefined;
+  setEditedPropertyId: React.Dispatch<React.SetStateAction<number | null>>;
+  itemId: number;
+  itemType: "container" | "compartment" | "item";
+  db: SQLiteDatabase;
 };
 export function DeleteWarning({
-  onPressConfirm,
-  onPressCancel,
+  setEditedPropertyId,
+  itemId,
+  itemType,
+  db
 }: DeleteWarningProps) {
+
+  
+  async function handleEditSubmit() {
+    await deleteData({itemId, itemType, db});
+    setEditedPropertyId(null);
+  }
   return (
-    <View>
-      <Text>Are you sure you want to delete this?</Text>
-      <Text>Any child data will also be deleted.</Text>
-      <View>
-        <Pressable onPress={onPressCancel} style={styles.cancelButton}>
+    <View style={styles.deleteWarningView}>
+      <Text style={{fontSize: 20}}>Delete Data?</Text>
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={() => setEditedPropertyId(null)} style={styles.cancelButton}>
           <AntDesign name="close" size={16} color="black" />
         </Pressable>
-        <Pressable onPress={onPressConfirm} style={styles.submitButton}>
+        <Pressable onPress={handleEditSubmit} style={styles.submitButton}>
           <AntDesign name="check" size={16} color="black" />
         </Pressable>
       </View>
@@ -27,6 +38,16 @@ export function DeleteWarning({
 }
 
 const styles = StyleSheet.create({
+  deleteWarningView: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    gap: 5,
+  },
   submitButton: {
     backgroundColor: "#ABDF75",
     paddingVertical: 5,

@@ -1,19 +1,16 @@
 import { type SQLiteDatabase } from "expo-sqlite";
 
-type updateDataProps = {
+type deleteDataProps = {
   itemId: number;
   itemType: "container" | "compartment" | "item";
-  itemName: string;
-  amount?: number;
   db: SQLiteDatabase;
 };
 
 export default async function deleteData({
   itemId,
   itemType,
-  itemName,
   db,
-}: updateDataProps) {
+}: deleteDataProps) {
   switch (itemType) {
     case "compartment": {
       try {

@@ -84,7 +84,10 @@ export default function Compartment({
       <FlatList
         data={compartmentData.items}
         renderItem={({ item }) => (
-          <Item itemData={item} compartmentContainerExpand />
+          <Item
+            itemData={item}
+            compartmentContainerExpand={compartmentContainerExpand}
+          />
         )}
       />
     </View>

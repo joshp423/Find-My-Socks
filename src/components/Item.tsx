@@ -32,7 +32,13 @@ export default function Item({
           <Text>
             {itemData.name} x{itemData.amount}
           </Text>
-          <View style={styles.buttonContainer}>
+          <View
+            style={
+              compartmentContainerExpand
+                ? styles.buttonContainer
+                : styles.disabled
+            }
+          >
             <AddButton
               title="Add"
               onPress={() => {
