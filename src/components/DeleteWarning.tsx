@@ -2,23 +2,39 @@ import { Pressable, Text, StyleSheet, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import deleteData from "../db/deleteData";
 import * as SQLite from "expo-sqlite";
+import type { UserContainer } from "../types/userContainer";
+import getUserStorage from "../db/getUserStorage";
 
 type DeleteWarningProps = {
   setEditedPropertyId: React.Dispatch<React.SetStateAction<number | null>>;
   itemId: number;
   itemType: "container" | "compartment" | "item";
+  setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
 };
 export function DeleteWarning({
   setEditedPropertyId,
   itemId,
   itemType,
+  setUserStorage,
 }: DeleteWarningProps) {
   const db = SQLite.useSQLiteContext();
 
+  async function load() {
+    const userData = await getUserStorage(db);
+    if (userData !== "No Data Found") {
+      setUserStorage(userData);
+      return;
+    }
+    setUserStorage(null);
+    return;
+  }
+
   async function handleEditSubmit() {
     await deleteData({ itemId, itemType, db });
+    await load();
     setEditedPropertyId(null);
   }
+
   return (
     <View style={styles.deleteWarningView}>
       <Text style={{ fontSize: 20 }}>Delete Data?</Text>

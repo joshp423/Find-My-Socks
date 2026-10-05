@@ -5,15 +5,18 @@ import { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { EditDataAmount } from "./EditRename";
 import { DeleteWarning } from "./DeleteWarning";
+import type { UserContainer } from "../types/userContainer";
 
 type ItemProps = {
   itemData: UserItem;
   compartmentContainerExpand: boolean;
+  setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
 };
 
 export default function Item({
   itemData,
   compartmentContainerExpand,
+  setUserStorage,
 }: ItemProps) {
   const [editedItemId, setEditedItemId] = useState<number | null>(null);
   const [deletedItemId, setDeletedItemId] = useState<number | null>(null);
@@ -27,6 +30,7 @@ export default function Item({
           name={itemData.name}
           id={editedItemId}
           amount={itemData.amount}
+          setUserStorage={setUserStorage}
         />
       ) : deletedItemId ? (
         <>
@@ -34,6 +38,7 @@ export default function Item({
             setEditedPropertyId={setDeletedItemId}
             itemId={itemData.id}
             itemType="item"
+            setUserStorage={setUserStorage}
           />
         </>
       ) : (

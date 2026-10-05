@@ -1,15 +1,17 @@
-import { GestureResponderEvent } from "react-native";
 import { Pressable, Text, StyleSheet, TextInput, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useState } from "react";
 import updateData from "../db/updateData";
 import * as SQLite from "expo-sqlite";
+import getUserStorage from "../db/getUserStorage";
+import type { UserContainer } from "../types/userContainer";
 
 type EditDataProps = {
   setEditedPropertyId: React.Dispatch<React.SetStateAction<number | null>>;
   value: string;
   id: number;
   type: "container" | "compartment";
+  setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
 };
 
 type EditDataAmountProps = {
@@ -17,6 +19,7 @@ type EditDataAmountProps = {
   name: string;
   amount: number;
   id: number;
+  setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
 };
 
 export function EditData({
@@ -24,13 +27,25 @@ export function EditData({
   value,
   id,
   type,
+  setUserStorage,
 }: EditDataProps) {
   const [dataTitle, setDataTitle] = useState<string>(value);
 
   const db = SQLite.useSQLiteContext();
 
+  async function load() {
+    const userData = await getUserStorage(db);
+    if (userData !== "No Data Found") {
+      setUserStorage(userData);
+      return;
+    }
+    setUserStorage(null);
+    return;
+  }
+
   async function handleEditSubmit() {
     await updateData({ itemId: id, itemName: dataTitle, itemType: type, db });
+    await load();
     setEditedPropertyId(null);
   }
 

@@ -6,15 +6,18 @@ import { useState } from "react";
 import { EditData } from "./EditRename";
 import Item from "./Item";
 import { DeleteWarning } from "./DeleteWarning";
+import type { UserContainer } from "../types/userContainer";
 
 type CompartmentProps = {
   compartmentData: userCompartment;
   viewedContainerExpand: boolean;
+  setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
 };
 
 export default function Compartment({
   compartmentData,
   viewedContainerExpand,
+  setUserStorage,
 }: CompartmentProps) {
   const [compartmentContainerExpand, setCompartmentContainerExpand] =
     useState<boolean>(false);
@@ -42,6 +45,7 @@ export default function Compartment({
             value={compartmentData.name}
             id={editedCompartmentId}
             type="compartment"
+            setUserStorage={setUserStorage}
           />
         ) : deletedCompartmentId ? (
           <>
@@ -49,6 +53,7 @@ export default function Compartment({
               setEditedPropertyId={setDeletedCompartmentId}
               itemId={compartmentData.id}
               itemType="compartment"
+              setUserStorage={setUserStorage}
             />
           </>
         ) : (
@@ -99,6 +104,7 @@ export default function Compartment({
           <Item
             itemData={item}
             compartmentContainerExpand={compartmentContainerExpand}
+            setUserStorage={setUserStorage}
           />
         )}
       />

@@ -1,28 +1,48 @@
-import { Pressable, Text, StyleSheet, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useState } from "react";
 import updateData from "../db/updateData";
 import * as SQLite from "expo-sqlite";
 import createData from "../db/createData";
+import { UserContainer } from "../types/userContainer";
+import getUserStorage from "../db/getUserStorage";
 
 type CreateDataProps = {
-  setEditedPropertyToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditedPropertyToggle?: React.Dispatch<React.SetStateAction<boolean>>;
   type: "container" | "compartment";
+  setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
 };
 
 type CreateDataAmountProps = {
   setEditedPropertyToggle: React.Dispatch<React.SetStateAction<boolean>>;
   amount: number;
   id: number;
+  setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
 };
 
-export function CreateNew({ setEditedPropertyToggle, type }: CreateDataProps) {
+export function CreateNew({
+  setEditedPropertyToggle,
+  type,
+  setUserStorage,
+}: CreateDataProps) {
   const [dataTitle, setDataTitle] = useState<string>("");
 
   const db = SQLite.useSQLiteContext();
 
+  async function load() {
+    const userData = await getUserStorage(db);
+    if (userData !== "No Data Found") {
+      setUserStorage(userData);
+      return;
+    }
+    setUserStorage(null);
+    return;
+  }
+
   async function handleEditSubmit() {
     await createData({ itemName: dataTitle, itemType: type, db });
+    await load();
+    if (!setEditedPropertyToggle) return;
     setEditedPropertyToggle(false);
   }
 
@@ -33,12 +53,15 @@ export function CreateNew({ setEditedPropertyToggle, type }: CreateDataProps) {
         style={styles.input}
         onChangeText={setDataTitle}
         submitBehavior="blurAndSubmit"
-        returnKeyType="default"
+        returnKeyType="done"
         inputMode="text"
       />
       <View style={styles.buttonContainer}>
         <Pressable
-          onPress={() => setEditedPropertyToggle(false)}
+          onPress={() => {
+            if (!setEditedPropertyToggle) return;
+            setEditedPropertyToggle(false);
+          }}
           style={styles.cancelButton}
         >
           <AntDesign name="close" size={16} color="black" />
