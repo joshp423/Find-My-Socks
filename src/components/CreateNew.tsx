@@ -11,19 +11,20 @@ type CreateDataProps = {
   setEditedPropertyToggle?: React.Dispatch<React.SetStateAction<boolean>>;
   type: "container" | "compartment";
   setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
+  parentId?: number;
 };
 
 type CreateDataAmountProps = {
   setEditedPropertyToggle: React.Dispatch<React.SetStateAction<boolean>>;
-  amount: number;
-  id: number;
   setUserStorage: React.Dispatch<React.SetStateAction<UserContainer[] | null>>;
+  parentId?: number;
 };
 
 export function CreateNew({
   setEditedPropertyToggle,
   type,
   setUserStorage,
+  parentId
 }: CreateDataProps) {
   const [dataTitle, setDataTitle] = useState<string>("");
 
@@ -40,7 +41,7 @@ export function CreateNew({
   }
 
   async function handleEditSubmit() {
-    await createData({ itemName: dataTitle, itemType: type, db });
+    await createData({ itemName: dataTitle, itemType: type, db, parentId });
     await load();
     if (!setEditedPropertyToggle) return;
     setEditedPropertyToggle(false);
@@ -55,6 +56,7 @@ export function CreateNew({
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
         inputMode="text"
+        placeholder="Name"
       />
       <View style={styles.buttonContainer}>
         <Pressable
@@ -74,59 +76,84 @@ export function CreateNew({
   );
 }
 
-export function CreateDataAmount({
+export function CreateNewAmount({
   setEditedPropertyToggle,
-  amount,
-  id,
+  setUserStorage,
+  parentId
 }: CreateDataAmountProps) {
   //need numeric confirmation
 
   const [dataTitle, setDataTitle] = useState<string>("");
-  const [dataAmount, setDataAmount] = useState<string>(String(amount));
+  const [dataAmount, setDataAmount] = useState<string>("");
 
   const db = SQLite.useSQLiteContext();
 
+  async function load() {
+    const userData = await getUserStorage(db);
+    if (userData !== "No Data Found") {
+      setUserStorage(userData);
+      return;
+    }
+    setUserStorage(null);
+    return;
+  }
+
   async function handleEditSubmit() {
-    await updateData({
-      itemId: id,
+    await createData({
       itemName: dataTitle,
       itemType: "item",
       db,
-      amount: Number(dataAmount),
+      itemAmount: Number(dataAmount),
+      parentId
     });
+    await load();
     setEditedPropertyToggle(false);
   }
+
   return (
-    <View>
+    <>
       <TextInput
         value={dataTitle}
-        style={styles.input}
+        style={styles.inputMultiple}
         onChangeText={setDataTitle}
         onSubmitEditing={handleEditSubmit}
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
+        placeholder="Name"
       />
       <TextInput
-        value={String(amount)}
+        value={String(dataAmount)}
+        style={styles.inputMultiple}
         keyboardType="numeric"
         onChangeText={setDataAmount}
         onSubmitEditing={handleEditSubmit}
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
+        placeholder="Amount"
       />
-      <Pressable onPress={() => setEditedPropertyToggle(false)}>
-        <AntDesign name="x" size={16} color="black" />
-      </Pressable>
-      <Pressable onPress={handleEditSubmit}>
-        <AntDesign name="check" size={16} color="black" />
-      </Pressable>
-    </View>
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={() => setEditedPropertyToggle(false)} style={styles.cancelButton}>
+          <AntDesign name="close" size={16} color="black" />
+        </Pressable>
+        <Pressable onPress={handleEditSubmit} style={styles.submitButton}>
+          <AntDesign name="check" size={16} color="black" />
+        </Pressable>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   input: {
     width: "50%",
+    height: "auto",
+    padding: 5,
+    paddingLeft: 10,
+    borderRadius: 16,
+    backgroundColor: "white",
+  },
+  inputMultiple: {
+    width: "30%",
     height: "auto",
     padding: 5,
     paddingLeft: 10,

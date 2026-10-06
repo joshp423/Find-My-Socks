@@ -7,6 +7,8 @@ import { EditData } from "./EditRename";
 import Item from "./Item";
 import { DeleteWarning } from "./DeleteWarning";
 import type { UserContainer } from "../types/userContainer";
+import { CreateNew } from "./CreateNew";
+import NoDataRow from "./NoDataRow";
 
 type CompartmentProps = {
   compartmentData: userCompartment;
@@ -27,6 +29,7 @@ export default function Compartment({
   const [deletedCompartmentId, setDeletedCompartmentId] = useState<
     number | null
   >(null);
+  const [newCompartmentToggle, setNewCompartmentToggle] = useState<boolean>(false);
 
   return (
     <View
@@ -56,6 +59,22 @@ export default function Compartment({
               setUserStorage={setUserStorage}
             />
           </>
+        ) : newCompartmentToggle ? (
+          <>
+            <CreateNew 
+              type="compartment"
+              setUserStorage={setUserStorage}
+              setEditedPropertyToggle={setNewCompartmentToggle}
+              parentId={compartmentData.parentID}
+            />
+          </>
+        ) : compartmentContainerExpand && compartmentData.items.length === 0 ? (
+          <>
+            <NoDataRow 
+              type="compartment"
+              setNewCompartmentToggle={setNewCompartmentToggle}
+            />
+          </>
         ) : (
           <>
             <Text style={styles.compartmentTitle}>{compartmentData.name}</Text>
@@ -63,7 +82,7 @@ export default function Compartment({
               <AddButton
                 title="Add"
                 onPress={() => {
-                  setCompartmentContainerExpand((prev) => !prev);
+                  setNewCompartmentToggle(true);
                 }}
                 children={<AntDesign name="plus" size={16} color="white" />}
               />
@@ -77,7 +96,7 @@ export default function Compartment({
               <DeleteButton
                 title="Delete"
                 onPress={() => {
-                  setCompartmentContainerExpand((prev) => !prev);
+                  setDeletedCompartmentId(compartmentData.id)
                 }}
                 children={<AntDesign name="delete" size={16} color="black" />}
               />
@@ -101,11 +120,18 @@ export default function Compartment({
       <FlatList
         data={compartmentData.items}
         renderItem={({ item }) => (
+          compartmentContainerExpand && compartmentData.items.length === 0 ? (
+            <NoDataRow 
+              type="item"
+              setNewCompartmentToggle={setNewCompartmentToggle}
+            />
+          ) : (
           <Item
             itemData={item}
             compartmentContainerExpand={compartmentContainerExpand}
             setUserStorage={setUserStorage}
           />
+          )
         )}
       />
     </View>

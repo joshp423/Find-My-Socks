@@ -8,6 +8,7 @@ import Compartment from "./Compartment";
 import { EditData } from "./EditRename";
 import { DeleteWarning } from "./DeleteWarning";
 import { CreateNew } from "./CreateNew";
+import NoDataRow from "./NoDataRow";
 
 type ContainerProps = {
   containerData: UserContainer;
@@ -104,16 +105,24 @@ export default function Container({
           </>
         )}
       </View>
-      <FlatList
-        data={containerData.compartments}
-        renderItem={({ item: compartment }) => (
-          <Compartment
-            compartmentData={compartment}
-            viewedContainerExpand={viewedContainerExpand}
-            setUserStorage={setUserStorage}
-          />
-        )}
-      />
+      {viewedContainerExpand && containerData.compartments.length === 0 ? (
+            <NoDataRow 
+                type="compartment"
+                setNewCompartmentToggle={setNewContainerToggle}
+            />
+        ) : (
+            <FlatList
+                data={containerData.compartments}
+                renderItem={({ item: compartment }) => (
+                <Compartment
+                    compartmentData={compartment}
+                    viewedContainerExpand={viewedContainerExpand}
+                    setUserStorage={setUserStorage}
+                />
+                )}
+            />
+        )
+    }
     </View>
   );
 }

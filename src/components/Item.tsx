@@ -6,6 +6,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { EditDataAmount } from "./EditRename";
 import { DeleteWarning } from "./DeleteWarning";
 import type { UserContainer } from "../types/userContainer";
+import { CreateNewAmount } from "./CreateNew";
 
 type ItemProps = {
   itemData: UserItem;
@@ -20,6 +21,8 @@ export default function Item({
 }: ItemProps) {
   const [editedItemId, setEditedItemId] = useState<number | null>(null);
   const [deletedItemId, setDeletedItemId] = useState<number | null>(null);
+  const [newItemToggle, setNewItemToggle] = useState<boolean>(false);
+
   return (
     <View
       style={compartmentContainerExpand ? styles.userItem : styles.disabled}
@@ -41,6 +44,14 @@ export default function Item({
             setUserStorage={setUserStorage}
           />
         </>
+      ) : newItemToggle ? (
+        <>
+          <CreateNewAmount 
+            setEditedPropertyToggle={setNewItemToggle}
+            setUserStorage={setUserStorage}
+            parentId={itemData.parentID}
+          />
+        </>
       ) : (
         <>
           <Text>
@@ -55,9 +66,7 @@ export default function Item({
           >
             <AddButton
               title="Add"
-              onPress={() => {
-                return;
-              }}
+              onPress={() => setNewItemToggle(true)}
               children={<AntDesign name="plus" size={16} color="white" />}
             />
             <RenameButton
@@ -70,7 +79,7 @@ export default function Item({
             <DeleteButton
               title="Delete"
               onPress={() => {
-                return;
+                setDeletedItemId(itemData.id)
               }}
               children={<AntDesign name="delete" size={16} color="black" />}
             />
