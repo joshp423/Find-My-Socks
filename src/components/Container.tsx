@@ -106,23 +106,26 @@ export default function Container({
         )}
       </View>
       {viewedContainerExpand && containerData.compartments.length === 0 ? (
-            <NoDataRow 
-                type="compartment"
-                setNewCompartmentToggle={setNewContainerToggle}
+        <View style={styles.noDataContainer}>
+          <NoDataRow
+            type="compartment"
+            setNewCompartmentToggle={setViewedContainerExpand}
+            setUserStorage={setUserStorage}
+            parentId={containerData.id}
+          />
+        </View>
+      ) : (
+        <FlatList
+          data={containerData.compartments}
+          renderItem={({ item: compartment }) => (
+            <Compartment
+              compartmentData={compartment}
+              viewedContainerExpand={viewedContainerExpand}
+              setUserStorage={setUserStorage}
             />
-        ) : (
-            <FlatList
-                data={containerData.compartments}
-                renderItem={({ item: compartment }) => (
-                <Compartment
-                    compartmentData={compartment}
-                    viewedContainerExpand={viewedContainerExpand}
-                    setUserStorage={setUserStorage}
-                />
-                )}
-            />
-        )
-    }
+          )}
+        />
+      )}
     </View>
   );
 }
@@ -164,5 +167,15 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     gap: 5,
+  },
+  noDataContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    paddingTop: 10,
+    justifyContent: "space-between",
+    paddingLeft: 5,
+    paddingRight: 5,
   },
 });

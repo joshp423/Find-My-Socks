@@ -29,7 +29,8 @@ export default function Compartment({
   const [deletedCompartmentId, setDeletedCompartmentId] = useState<
     number | null
   >(null);
-  const [newCompartmentToggle, setNewCompartmentToggle] = useState<boolean>(false);
+  const [newCompartmentToggle, setNewCompartmentToggle] =
+    useState<boolean>(false);
 
   return (
     <View
@@ -61,18 +62,11 @@ export default function Compartment({
           </>
         ) : newCompartmentToggle ? (
           <>
-            <CreateNew 
+            <CreateNew
               type="compartment"
               setUserStorage={setUserStorage}
               setEditedPropertyToggle={setNewCompartmentToggle}
               parentId={compartmentData.parentID}
-            />
-          </>
-        ) : compartmentContainerExpand && compartmentData.items.length === 0 ? (
-          <>
-            <NoDataRow 
-              type="compartment"
-              setNewCompartmentToggle={setNewCompartmentToggle}
             />
           </>
         ) : (
@@ -96,7 +90,7 @@ export default function Compartment({
               <DeleteButton
                 title="Delete"
                 onPress={() => {
-                  setDeletedCompartmentId(compartmentData.id)
+                  setDeletedCompartmentId(compartmentData.id);
                 }}
                 children={<AntDesign name="delete" size={16} color="black" />}
               />
@@ -117,23 +111,27 @@ export default function Compartment({
           </>
         )}
       </View>
-      <FlatList
-        data={compartmentData.items}
-        renderItem={({ item }) => (
-          compartmentContainerExpand && compartmentData.items.length === 0 ? (
-            <NoDataRow 
-              type="item"
-              setNewCompartmentToggle={setNewCompartmentToggle}
-            />
-          ) : (
-          <Item
-            itemData={item}
-            compartmentContainerExpand={compartmentContainerExpand}
+      {compartmentContainerExpand && compartmentData.items.length === 0 ? (
+        <View style={styles.noDataContainer}>
+          <NoDataRow
+            type="item"
+            setNewCompartmentToggle={setNewCompartmentToggle}
+            parentId={compartmentData.id}
             setUserStorage={setUserStorage}
           />
-          )
-        )}
-      />
+        </View>
+      ) : (
+        <FlatList
+          data={compartmentData.items}
+          renderItem={({ item }) => (
+            <Item
+              itemData={item}
+              compartmentContainerExpand={compartmentContainerExpand}
+              setUserStorage={setUserStorage}
+            />
+          )}
+        />
+      )}
     </View>
   );
 }
@@ -179,5 +177,15 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     gap: 5,
+  },
+  noDataContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    paddingTop: 10,
+    justifyContent: "space-between",
+    paddingLeft: 5,
+    paddingRight: 5,
   },
 });

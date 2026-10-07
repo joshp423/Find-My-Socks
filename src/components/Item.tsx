@@ -46,7 +46,7 @@ export default function Item({
         </>
       ) : newItemToggle ? (
         <>
-          <CreateNewAmount 
+          <CreateNewAmount
             setEditedPropertyToggle={setNewItemToggle}
             setUserStorage={setUserStorage}
             parentId={itemData.parentID}
@@ -72,14 +72,14 @@ export default function Item({
             <RenameButton
               title="Edit"
               onPress={() => {
-                return;
+                setEditedItemId(itemData.id);
               }}
               children={<AntDesign name="edit" size={16} color="black" />}
             />
             <DeleteButton
               title="Delete"
               onPress={() => {
-                setDeletedItemId(itemData.id)
+                setDeletedItemId(itemData.id);
               }}
               children={<AntDesign name="delete" size={16} color="black" />}
             />

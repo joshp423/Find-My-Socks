@@ -79,6 +79,7 @@ export function EditDataAmount({
   name,
   amount,
   id,
+  setUserStorage,
 }: EditDataAmountProps) {
   //need numeric confirmation
 
@@ -86,6 +87,16 @@ export function EditDataAmount({
   const [dataAmount, setDataAmount] = useState<string>(String(amount));
 
   const db = SQLite.useSQLiteContext();
+
+  async function load() {
+    const userData = await getUserStorage(db);
+    if (userData !== "No Data Found") {
+      setUserStorage(userData);
+      return;
+    }
+    setUserStorage(null);
+    return;
+  }
 
   async function handleEditSubmit() {
     await updateData({
@@ -95,39 +106,56 @@ export function EditDataAmount({
       db,
       amount: Number(dataAmount),
     });
+    await load();
     setEditedPropertyId(null);
   }
   return (
-    <View>
+    <>
       <TextInput
-        value={name}
-        style={styles.input}
+        value={dataTitle}
+        style={styles.inputMultiple}
         onChangeText={setDataTitle}
         onSubmitEditing={handleEditSubmit}
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
+        placeholder="Name "
       />
       <TextInput
-        value={String(amount)}
+        value={String(dataAmount)}
+        style={styles.inputMultiple}
         keyboardType="numeric"
         onChangeText={setDataAmount}
         onSubmitEditing={handleEditSubmit}
         submitBehavior="blurAndSubmit"
         returnKeyType="done"
+        placeholder="Amount"
       />
-      <Pressable onPress={() => setEditedPropertyId(null)}>
-        <AntDesign name="x" size={16} color="black" />
-      </Pressable>
-      <Pressable onPress={handleEditSubmit}>
-        <AntDesign name="check" size={16} color="black" />
-      </Pressable>
-    </View>
+      <View style={styles.buttonContainer}>
+        <Pressable
+          onPress={() => setEditedPropertyId(null)}
+          style={styles.cancelButton}
+        >
+          <AntDesign name="close" size={16} color="black" />
+        </Pressable>
+        <Pressable onPress={handleEditSubmit} style={styles.submitButton}>
+          <AntDesign name="check" size={16} color="black" />
+        </Pressable>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   input: {
     width: "50%",
+    height: "auto",
+    padding: 5,
+    paddingLeft: 10,
+    borderRadius: 16,
+    backgroundColor: "white",
+  },
+  inputMultiple: {
+    width: "30%",
     height: "auto",
     padding: 5,
     paddingLeft: 10,

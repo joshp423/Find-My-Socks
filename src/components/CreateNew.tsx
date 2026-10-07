@@ -24,7 +24,7 @@ export function CreateNew({
   setEditedPropertyToggle,
   type,
   setUserStorage,
-  parentId
+  parentId,
 }: CreateDataProps) {
   const [dataTitle, setDataTitle] = useState<string>("");
 
@@ -79,7 +79,7 @@ export function CreateNew({
 export function CreateNewAmount({
   setEditedPropertyToggle,
   setUserStorage,
-  parentId
+  parentId,
 }: CreateDataAmountProps) {
   //need numeric confirmation
 
@@ -104,7 +104,7 @@ export function CreateNewAmount({
       itemType: "item",
       db,
       itemAmount: Number(dataAmount),
-      parentId
+      parentId,
     });
     await load();
     setEditedPropertyToggle(false);
@@ -132,7 +132,10 @@ export function CreateNewAmount({
         placeholder="Amount"
       />
       <View style={styles.buttonContainer}>
-        <Pressable onPress={() => setEditedPropertyToggle(false)} style={styles.cancelButton}>
+        <Pressable
+          onPress={() => setEditedPropertyToggle(false)}
+          style={styles.cancelButton}
+        >
           <AntDesign name="close" size={16} color="black" />
         </Pressable>
         <Pressable onPress={handleEditSubmit} style={styles.submitButton}>
