@@ -7,18 +7,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { CreateProfile } from "./CreateProfile";
-import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as SQLite from "expo-sqlite";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import search from "../../db/search";
 import { type ItemSearchResults } from "../../types/itemSearchResults";
 import { DefaultButton } from "../../components/Buttons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 export function Home() {
-  const [userProfileCheck, setUserProfileCheck] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
   const [searchTerms, onChangeSearchTerms] = useState<string>("");
   const [confirmSearch, setConfirmSearch] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<
@@ -26,25 +22,6 @@ export function Home() {
   >(null);
 
   const db = SQLite.useSQLiteContext();
-
-  // create a storage instance
-  const userStorage = createAsyncStorage("appDB");
-
-  //   await userStorage.removeItem("userToken");
-
-  useEffect(() => {
-    async function load() {
-      const user = await userStorage.getItem("userProfile");
-      if (user) {
-        setUserProfileCheck(true);
-        setUsername(user);
-        return;
-      }
-      setUserProfileCheck(false);
-      return;
-    }
-    load();
-  }, []);
 
   type ItemProps = {
     itemName: string;
@@ -76,10 +53,6 @@ export function Home() {
       </View>
     </View>
   );
-
-  if (!userProfileCheck) {
-    return <CreateProfile userStorage={userStorage} />;
-  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -135,16 +108,6 @@ export function Home() {
         ) : (
           <></>
         )}
-        <View style={styles.navButtons}>
-          <NavButton
-            screen="Profile"
-            params={{ user: username }}
-            style={styles.navButton}
-            color="black"
-          >
-            Edit Username
-          </NavButton>
-        </View>
       </View>
     </TouchableWithoutFeedback>
   );

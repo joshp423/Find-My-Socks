@@ -2,7 +2,6 @@ import {
   createBottomTabNavigator,
   createBottomTabScreen,
 } from "@react-navigation/bottom-tabs";
-import { HeaderButton, Text } from "@react-navigation/elements";
 import { createStaticNavigation } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
@@ -13,9 +12,7 @@ import bell from "../assets/bell.png";
 import newspaper from "../assets/newspaper.png";
 import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
-import { Profile } from "./screens/Profile";
 import { Storage } from "./screens/Storage";
-import { fa } from "zod/v4/locales";
 
 const HomeTabs = createBottomTabNavigator({
   screenOptions: {
@@ -81,18 +78,6 @@ const RootStack = createNativeStackNavigator({
       options: {
         title: "Home",
         headerShown: false,
-      },
-    }),
-    Profile: createNativeStackScreen({
-      screen: Profile,
-      linking: {
-        path: ":user(@[a-zA-Z0-9-_]+)",
-        parse: {
-          user: (value) => value.replace(/^@/, ""),
-        },
-        stringify: {
-          user: (value) => `@${value}`,
-        },
       },
     }),
     Storage: createNativeStackScreen({
