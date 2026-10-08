@@ -13,6 +13,7 @@ import newspaper from "../assets/newspaper.png";
 import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
 import { Storage } from "./screens/Storage";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const HomeTabs = createBottomTabNavigator({
   screenOptions: {
@@ -39,13 +40,10 @@ const HomeTabs = createBottomTabNavigator({
       options: {
         title: "Find Items",
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-            }}
+          <AntDesign 
+            name="compass"
+            size={size}
+            color={color}
           />
         ),
         headerShown: false,
@@ -57,13 +55,10 @@ const HomeTabs = createBottomTabNavigator({
         title: "Manage Storage",
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={bell}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-            }}
+          <AntDesign 
+            name="container"
+            size={size}
+            color={color}
           />
         ),
       },

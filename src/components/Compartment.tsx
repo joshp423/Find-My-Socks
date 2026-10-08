@@ -9,6 +9,8 @@ import { DeleteWarning } from "./DeleteWarning";
 import type { UserContainer } from "../types/userContainer";
 import { CreateNew } from "./CreateNew";
 import NoDataRow from "./NoDataRow";
+import { ExpandView } from "./Animations";
+
 
 type CompartmentProps = {
   compartmentData: userCompartment;
@@ -33,8 +35,9 @@ export default function Compartment({
     useState<boolean>(false);
 
   return (
-    <View
+    <ExpandView
       style={viewedContainerExpand ? styles.userCompartment : styles.disabled}
+      displayed={viewedContainerExpand}
     >
       <View
         style={
@@ -96,8 +99,7 @@ export default function Compartment({
               />
               <ExpandButton
                 title=""
-                onPress={() => {
-                  setCompartmentContainerExpand((prev) => !prev);
+                onPress={() => {setTimeout(() => setCompartmentContainerExpand((prev) => !prev), 300)
                 }}
                 children={
                   !compartmentContainerExpand ? (
@@ -132,7 +134,7 @@ export default function Compartment({
           )}
         />
       )}
-    </View>
+    </ExpandView>
   );
 }
 

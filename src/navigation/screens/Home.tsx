@@ -1,4 +1,4 @@
-import { Button as NavButton, Text } from "@react-navigation/elements";
+import { Text } from "@react-navigation/elements";
 import {
   StyleSheet,
   View,

@@ -1,5 +1,5 @@
 import { Text } from "@react-navigation/elements";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { UserContainer } from "../types/userContainer";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -9,6 +9,7 @@ import { EditData } from "./EditRename";
 import { DeleteWarning } from "./DeleteWarning";
 import { CreateNew } from "./CreateNew";
 import NoDataRow from "./NoDataRow";
+import { ExpandView } from "./Animations";
 
 type ContainerProps = {
   containerData: UserContainer;
@@ -90,8 +91,7 @@ export default function Container({
               />
               <ExpandButton
                 title=""
-                onPress={() => {
-                  setViewedContainerExpand((prev) => !prev);
+                onPress={() => {setTimeout(() => setViewedContainerExpand((prev) => !prev), 300)
                 }}
                 children={
                   !viewedContainerExpand ? (
@@ -106,25 +106,28 @@ export default function Container({
         )}
       </View>
       {viewedContainerExpand && containerData.compartments.length === 0 ? (
-        <View style={styles.noDataContainer}>
+        <ExpandView style={styles.noDataContainer} displayed={viewedContainerExpand}>
           <NoDataRow
             type="compartment"
             setNewCompartmentToggle={setViewedContainerExpand}
             setUserStorage={setUserStorage}
             parentId={containerData.id}
           />
-        </View>
+        </ExpandView>
       ) : (
+        <ExpandView displayed={viewedContainerExpand}>
         <FlatList
           data={containerData.compartments}
           renderItem={({ item: compartment }) => (
-            <Compartment
-              compartmentData={compartment}
-              viewedContainerExpand={viewedContainerExpand}
-              setUserStorage={setUserStorage}
-            />
+              <Compartment
+                compartmentData={compartment}
+                viewedContainerExpand={viewedContainerExpand}
+                setUserStorage={setUserStorage}
+              />
+            
           )}
         />
+        </ExpandView>
       )}
     </View>
   );
