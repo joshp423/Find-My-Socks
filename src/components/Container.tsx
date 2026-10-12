@@ -29,6 +29,7 @@ export default function Container({
     null,
   );
   const [newContainerToggle, setNewContainerToggle] = useState<boolean>(false);
+  const [containerAnimationToggle, setContainerAnimationToggle] = useState<boolean>(false);
 
   return (
     <View style={styles.userContainer}>
@@ -91,7 +92,9 @@ export default function Container({
               />
               <ExpandButton
                 title=""
-                onPress={() => {setTimeout(() => setViewedContainerExpand((prev) => !prev), 300)
+                onPress={() => {
+                  setContainerAnimationToggle((prev) => !prev);
+                  setTimeout(() => setViewedContainerExpand((prev) => !prev), 200)
                 }}
                 children={
                   !viewedContainerExpand ? (
@@ -106,16 +109,16 @@ export default function Container({
         )}
       </View>
       {viewedContainerExpand && containerData.compartments.length === 0 ? (
-        <ExpandView style={styles.noDataContainer} displayed={viewedContainerExpand}>
+        <ExpandView style={styles.noDataContainer} displayed={containerAnimationToggle}>
           <NoDataRow
             type="compartment"
-            setNewCompartmentToggle={setViewedContainerExpand}
             setUserStorage={setUserStorage}
             parentId={containerData.id}
+            displayed={viewedContainerExpand}
           />
         </ExpandView>
       ) : (
-        <ExpandView displayed={viewedContainerExpand}>
+        <ExpandView displayed={containerAnimationToggle}>
         <FlatList
           data={containerData.compartments}
           renderItem={({ item: compartment }) => (
@@ -140,8 +143,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderTopWidth: 2,
     borderBottomWidth: 2,
-    paddingBottom: 10,
-    paddingTop: 10,
+    paddingBottom: 0,
+    paddingTop: 0,
+    minHeight: 50,
   },
   userContainerControlRow: {
     width: "100%",
@@ -157,7 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingBottom: 15,
+    paddingBottom: 5,
     borderBottomWidth: 0.5,
     minHeight: 50,
   },

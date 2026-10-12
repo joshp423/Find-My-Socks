@@ -8,17 +8,17 @@ type ExpandViewProps = PropsWithChildren<{
 
 export function ExpandView({style, displayed, children}: ExpandViewProps) {
   const expandOpacityAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-  const expandTransformAnim = useRef(new Animated.Value(10)).current; // Initial value for transform: 20
+  const expandTransformAnim = useRef(new Animated.Value(-10)).current; // Initial value for transform: 20
   useEffect(() => {
     const opacityAnimation = Animated.timing(expandOpacityAnim, {
       toValue: displayed ? 1 : 0,
-      duration: 300,
+      duration: 200,
       useNativeDriver: true,
     });
 
     const transformAnimation = Animated.timing(expandTransformAnim, {
       toValue: displayed ? 0 : -10,
-      duration: 300,
+      duration: 200,
       useNativeDriver: true,
     });
 

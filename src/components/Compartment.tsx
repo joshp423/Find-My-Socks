@@ -33,6 +33,7 @@ export default function Compartment({
   >(null);
   const [newCompartmentToggle, setNewCompartmentToggle] =
     useState<boolean>(false);
+  const [compartmentAnimationToggle, setCompartmentAnimationToggle] = useState<boolean>(false);
 
   return (
     <ExpandView
@@ -99,7 +100,9 @@ export default function Compartment({
               />
               <ExpandButton
                 title=""
-                onPress={() => {setTimeout(() => setCompartmentContainerExpand((prev) => !prev), 300)
+                onPress={() => {
+                  setCompartmentAnimationToggle((prev) => !prev);
+                  setTimeout(() => setCompartmentContainerExpand((prev) => !prev), 200)
                 }}
                 children={
                   !compartmentContainerExpand ? (
@@ -114,25 +117,27 @@ export default function Compartment({
         )}
       </View>
       {compartmentContainerExpand && compartmentData.items.length === 0 ? (
-        <View style={styles.noDataContainer}>
+        <ExpandView style={styles.noDataContainer} displayed={compartmentAnimationToggle}>
           <NoDataRow
             type="item"
-            setNewCompartmentToggle={setNewCompartmentToggle}
+            displayed={compartmentContainerExpand}
             parentId={compartmentData.id}
             setUserStorage={setUserStorage}
           />
-        </View>
+        </ExpandView>
       ) : (
-        <FlatList
-          data={compartmentData.items}
-          renderItem={({ item }) => (
-            <Item
-              itemData={item}
-              compartmentContainerExpand={compartmentContainerExpand}
-              setUserStorage={setUserStorage}
-            />
-          )}
-        />
+        <ExpandView style={styles.noDataContainer} displayed={compartmentAnimationToggle}>
+          <FlatList
+            data={compartmentData.items}
+            renderItem={({ item }) => (
+              <Item
+                itemData={item}
+                compartmentContainerExpand={compartmentContainerExpand}
+                setUserStorage={setUserStorage}
+              />
+            )}
+          />
+        </ExpandView>
       )}
     </ExpandView>
   );
@@ -187,7 +192,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 10,
     justifyContent: "space-between",
-    paddingLeft: 5,
-    paddingRight: 5,
+    
   },
 });

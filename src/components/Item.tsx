@@ -7,6 +7,7 @@ import { EditDataAmount } from "./EditRename";
 import { DeleteWarning } from "./DeleteWarning";
 import type { UserContainer } from "../types/userContainer";
 import { CreateNewAmount } from "./CreateNew";
+import { ExpandView } from "./Animations";
 
 type ItemProps = {
   itemData: UserItem;
@@ -24,7 +25,8 @@ export default function Item({
   const [newItemToggle, setNewItemToggle] = useState<boolean>(false);
 
   return (
-    <View
+    <ExpandView
+      displayed={compartmentContainerExpand}
       style={compartmentContainerExpand ? styles.userItem : styles.disabled}
     >
       {editedItemId ? (
@@ -54,7 +56,7 @@ export default function Item({
         </>
       ) : (
         <>
-          <Text>
+          <Text style={{fontSize: 14}}>
             {itemData.name} x{itemData.amount}
           </Text>
           <View
@@ -86,7 +88,7 @@ export default function Item({
           </View>
         </>
       )}
-    </View>
+    </ExpandView>
   );
 }
 
@@ -95,13 +97,13 @@ const styles = StyleSheet.create({
     display: "none",
   },
   userItem: {
-    display: "flex",
-    padding: 5,
-    flexDirection: "row",
     width: "100%",
-    alignItems: "center",
+    padding: 5,
+    paddingBottom: 15,
+    flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: 10,
+    alignItems: "center",
+    borderBottomWidth: 0.5
   },
   buttonContainer: {
     flexDirection: "row",
