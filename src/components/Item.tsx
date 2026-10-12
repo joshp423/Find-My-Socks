@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
   userItem: {
     width: "100%",
     padding: 5,
-    paddingBottom: 15,
+    paddingBottom: 10,
+    paddingTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

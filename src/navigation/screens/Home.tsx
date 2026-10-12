@@ -37,20 +37,39 @@ export function Home() {
     containerName,
   }: ItemProps) => (
     //style these
-    <View style={styles.resultsList}>
-      <Text style={styles.resultsContainerText}>{containerName}</Text>
-      <AntDesign name="arrow-down" size={16} color="black" />
-      <Text style={styles.resultsCompartmentText}>{compartmentName}</Text>
-      <AntDesign
-        name="arrow-down"
-        size={16}
-        color="black"
-        style={styles.resultsArrow}
-      />
+    <View style={styles.resultsListItem}>
       <View style={styles.resultsItemContainer}>
         <Text style={styles.resultsItemText}>{itemName}</Text>
         <Text style={styles.resultsItemAmountText}>Amount: {itemAmount}</Text>
       </View>
+      <View style={styles.resultsPath}>
+        <View style={{flexDirection: "row", gap: 5}}> 
+          <AntDesign
+            name="group"
+            size={14}
+            color="black"
+            style={styles.resultsArrow}
+          />
+          <Text style={styles.resultsContainerText}>{containerName}</Text>
+        </View>
+          <AntDesign
+            name="arrow-right"
+            size={14}
+            color="black"
+            style={styles.resultsArrow}
+          />
+        <View style={{flexDirection: "row", gap: 5}}>
+          <AntDesign
+            name="folder"
+            size={16}
+            color="black"
+            style={styles.resultsArrow}
+          />
+          <Text style={styles.resultsCompartmentText}>{compartmentName}</Text>
+        </View>
+      </View>
+     
+      
     </View>
   );
 
@@ -83,10 +102,11 @@ export function Home() {
             {searchResults !== "No Item Found" ? (
               <View style={styles.foundSearchResults}>
                 <Text style={styles.searchTermTitle}>
-                  Here's where to find {searchTerms}:
+                  Here's where to find "{searchTerms}":
                 </Text>
-                <View style={styles.searchResultsScrollContainer}>
+                <View>
                   <FlatList
+                    style={styles.searchResultsScrollContainer}
                     data={searchResults}
                     renderItem={({ item }) => (
                       <Item
@@ -115,11 +135,11 @@ export function Home() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 5,
     width: "100%",
+    height: "100%",
     backgroundColor: "#C5D6D8",
   },
   input: {
@@ -162,9 +182,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   searchResultsContainer: {
-    marginTop: 30,
+    marginTop: 20,
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignContent: "flex-start",
     paddingLeft: 10,
     paddingRight: 10,
@@ -180,40 +200,51 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     borderBottomWidth: 0.5,
   },
-  searchResultsScrollContainer: {},
-  resultsList: {
+  searchResultsScrollContainer: {
+    maxHeight: "100%",
+    gap: 10,
+  },
+  resultsListItem: {
     gap: 10,
     borderRadius: 12,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "#ABDF75",
-    borderWidth: 0.5,
-    alignItems: "center",
+    padding: 10,
+    backgroundColor: "white",
+    alignItems: "flex-start",
+    marginBottom: 10,
+    boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.23)",
   },
   resultsContainerText: {
-    fontSize: 18,
+    fontSize: 14,
     color: "black",
   },
   resultsCompartmentText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "black",
   },
   resultsItemContainer: {
-    alignItems: "center",
-    gap: 10,
+    alignItems: "flex-start",
+    gap: 5,
     padding: 5,
-    borderWidth: 0.5,
-    borderRadius: 12,
   },
   resultsItemText: {
-    fontSize: 14,
+    fontSize: 16,
     color: "black",
+    fontWeight: "bold",
   },
   resultsItemAmountText: {
-    fontSize: 14,
+    fontSize: 13,
     color: "black",
   },
   resultsArrow: {
     alignSelf: "center",
   },
+  resultsPath: {
+    flexDirection: "row", 
+    width: "100%",
+    gap: 10,
+    backgroundColor: "#ABDF75",
+    padding: 7,
+    paddingLeft: 10,
+    borderRadius: 12
+  }
 });

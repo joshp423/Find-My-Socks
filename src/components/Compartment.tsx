@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
-    paddingTop: 10,
+    paddingTop: 0,
     justifyContent: "space-between",
     
   },

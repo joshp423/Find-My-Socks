@@ -180,7 +180,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
-    paddingTop: 10,
     justifyContent: "space-between",
     paddingLeft: 5,
     paddingRight: 5,
