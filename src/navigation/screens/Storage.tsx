@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
   },
   flatListUserData: {
     width: "100%",
-    maxHeight: "70%"
+    maxHeight: "70%",
   },
 });

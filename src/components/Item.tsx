@@ -56,7 +56,7 @@ export default function Item({
         </>
       ) : (
         <>
-          <Text style={{fontSize: 14}}>
+          <Text style={{ fontSize: 14 }}>
             {itemData.name} x{itemData.amount}
           </Text>
           <View
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottomWidth: 0.5
+    borderBottomWidth: 0.5,
   },
   buttonContainer: {
     flexDirection: "row",

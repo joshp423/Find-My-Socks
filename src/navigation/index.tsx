@@ -40,11 +40,7 @@ const HomeTabs = createBottomTabNavigator({
       options: {
         title: "Find Items",
         tabBarIcon: ({ color, size }) => (
-          <AntDesign 
-            name="compass"
-            size={size}
-            color={color}
-          />
+          <AntDesign name="compass" size={size} color={color} />
         ),
         headerShown: false,
       },
@@ -55,11 +51,7 @@ const HomeTabs = createBottomTabNavigator({
         title: "Manage Storage",
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <AntDesign 
-            name="container"
-            size={size}
-            color={color}
-          />
+          <AntDesign name="container" size={size} color={color} />
         ),
       },
     }),

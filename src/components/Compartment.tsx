@@ -11,7 +11,6 @@ import { CreateNew } from "./CreateNew";
 import NoDataRow from "./NoDataRow";
 import { ExpandView } from "./Animations";
 
-
 type CompartmentProps = {
   compartmentData: userCompartment;
   viewedContainerExpand: boolean;
@@ -33,7 +32,8 @@ export default function Compartment({
   >(null);
   const [newCompartmentToggle, setNewCompartmentToggle] =
     useState<boolean>(false);
-  const [compartmentAnimationToggle, setCompartmentAnimationToggle] = useState<boolean>(false);
+  const [compartmentAnimationToggle, setCompartmentAnimationToggle] =
+    useState<boolean>(false);
 
   return (
     <ExpandView
@@ -102,7 +102,10 @@ export default function Compartment({
                 title=""
                 onPress={() => {
                   setCompartmentAnimationToggle((prev) => !prev);
-                  setTimeout(() => setCompartmentContainerExpand((prev) => !prev), 200)
+                  setTimeout(
+                    () => setCompartmentContainerExpand((prev) => !prev),
+                    200,
+                  );
                 }}
                 children={
                   !compartmentContainerExpand ? (
@@ -117,7 +120,10 @@ export default function Compartment({
         )}
       </View>
       {compartmentContainerExpand && compartmentData.items.length === 0 ? (
-        <ExpandView style={styles.noDataContainer} displayed={compartmentAnimationToggle}>
+        <ExpandView
+          style={styles.noDataContainer}
+          displayed={compartmentAnimationToggle}
+        >
           <NoDataRow
             type="item"
             displayed={compartmentContainerExpand}
@@ -126,7 +132,10 @@ export default function Compartment({
           />
         </ExpandView>
       ) : (
-        <ExpandView style={styles.noDataContainer} displayed={compartmentAnimationToggle}>
+        <ExpandView
+          style={styles.noDataContainer}
+          displayed={compartmentAnimationToggle}
+        >
           <FlatList
             data={compartmentData.items}
             renderItem={({ item }) => (
@@ -148,11 +157,13 @@ const styles = StyleSheet.create({
     display: "flex",
     width: "100%",
     alignItems: "center",
-    paddingTop: 10,
+    paddingTop: 0,
   },
   userCompartmentControlRow: {
     width: "100%",
     padding: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -163,7 +174,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingBottom: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
     borderBottomWidth: 0.5,
   },
   compartmentTitle: {
@@ -192,6 +204,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 0,
     justifyContent: "space-between",
-    
   },
 });

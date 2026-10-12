@@ -1,12 +1,12 @@
-import {useEffect, useRef, type PropsWithChildren, type FC} from 'react';
-import {Animated, type ViewStyle, type StyleProp} from 'react-native';
+import { useEffect, useRef, type PropsWithChildren, type FC } from "react";
+import { Animated, type ViewStyle, type StyleProp } from "react-native";
 
 type ExpandViewProps = PropsWithChildren<{
-    style?: StyleProp<ViewStyle> //be able to take a stylesheet as a view would
-    displayed: boolean
+  style?: StyleProp<ViewStyle>; //be able to take a stylesheet as a view would
+  displayed: boolean;
 }>;
 
-export function ExpandView({style, displayed, children}: ExpandViewProps) {
+export function ExpandView({ style, displayed, children }: ExpandViewProps) {
   const expandOpacityAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
   const expandTransformAnim = useRef(new Animated.Value(-10)).current; // Initial value for transform: 20
   useEffect(() => {
@@ -22,25 +22,25 @@ export function ExpandView({style, displayed, children}: ExpandViewProps) {
       useNativeDriver: true,
     });
 
-    Animated.parallel([opacityAnimation, transformAnimation]).start()
+    Animated.parallel([opacityAnimation, transformAnimation]).start();
 
     return () => {
-        opacityAnimation.stop();
-        transformAnimation.stop();
-    }
+      opacityAnimation.stop();
+      transformAnimation.stop();
+    };
   }, [expandOpacityAnim, expandTransformAnim, displayed]);
 
   return (
     <Animated.View // animated View
       style={[
-        style, {
-            transform: [{translateY: expandTransformAnim}],
-            opacity: expandOpacityAnim // Bind opacity to animated value
-        }]
-      }>
+        style,
+        {
+          transform: [{ translateY: expandTransformAnim }],
+          opacity: expandOpacityAnim, // Bind opacity to animated value
+        },
+      ]}
+    >
       {children}
     </Animated.View>
   );
-};
-
-
+}

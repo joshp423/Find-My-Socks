@@ -43,7 +43,7 @@ export function Home() {
         <Text style={styles.resultsItemAmountText}>Amount: {itemAmount}</Text>
       </View>
       <View style={styles.resultsPath}>
-        <View style={{flexDirection: "row", gap: 5}}> 
+        <View style={{ flexDirection: "row", gap: 5 }}>
           <AntDesign
             name="group"
             size={14}
@@ -52,13 +52,13 @@ export function Home() {
           />
           <Text style={styles.resultsContainerText}>{containerName}</Text>
         </View>
-          <AntDesign
-            name="arrow-right"
-            size={14}
-            color="black"
-            style={styles.resultsArrow}
-          />
-        <View style={{flexDirection: "row", gap: 5}}>
+        <AntDesign
+          name="arrow-right"
+          size={14}
+          color="black"
+          style={styles.resultsArrow}
+        />
+        <View style={{ flexDirection: "row", gap: 5 }}>
           <AntDesign
             name="folder"
             size={16}
@@ -68,8 +68,6 @@ export function Home() {
           <Text style={styles.resultsCompartmentText}>{compartmentName}</Text>
         </View>
       </View>
-     
-      
     </View>
   );
 
@@ -239,12 +237,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   resultsPath: {
-    flexDirection: "row", 
+    flexDirection: "row",
     width: "100%",
     gap: 10,
     backgroundColor: "#ABDF75",
     padding: 7,
     paddingLeft: 10,
-    borderRadius: 12
-  }
+    borderRadius: 12,
+  },
 });

@@ -17,7 +17,7 @@ export default function NoDataRow({
   type,
   setUserStorage,
   parentId,
-  displayed
+  displayed,
 }: NoDataRowProps) {
   const [newItemToggle, setNewItemToggle] = useState<boolean>(false);
   return (
@@ -39,7 +39,7 @@ export default function NoDataRow({
         )
       ) : (
         <>
-          <Text style={{fontSize: 14}}>No {type}s</Text>
+          <Text style={{ fontSize: 14 }}>No {type}s</Text>
           <AddButton
             onPress={() => setNewItemToggle(true)}
             title="Add"
@@ -60,6 +60,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottomWidth: 0.5
-  }
-})
+    borderBottomWidth: 0.5,
+  },
+});

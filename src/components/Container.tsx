@@ -29,7 +29,8 @@ export default function Container({
     null,
   );
   const [newContainerToggle, setNewContainerToggle] = useState<boolean>(false);
-  const [containerAnimationToggle, setContainerAnimationToggle] = useState<boolean>(false);
+  const [containerAnimationToggle, setContainerAnimationToggle] =
+    useState<boolean>(false);
 
   return (
     <View style={styles.userContainer}>
@@ -94,7 +95,10 @@ export default function Container({
                 title=""
                 onPress={() => {
                   setContainerAnimationToggle((prev) => !prev);
-                  setTimeout(() => setViewedContainerExpand((prev) => !prev), 200)
+                  setTimeout(
+                    () => setViewedContainerExpand((prev) => !prev),
+                    200,
+                  );
                 }}
                 children={
                   !viewedContainerExpand ? (
@@ -109,7 +113,10 @@ export default function Container({
         )}
       </View>
       {viewedContainerExpand && containerData.compartments.length === 0 ? (
-        <ExpandView style={styles.noDataContainer} displayed={containerAnimationToggle}>
+        <ExpandView
+          style={styles.noDataContainer}
+          displayed={containerAnimationToggle}
+        >
           <NoDataRow
             type="compartment"
             setUserStorage={setUserStorage}
@@ -119,17 +126,16 @@ export default function Container({
         </ExpandView>
       ) : (
         <ExpandView displayed={containerAnimationToggle}>
-        <FlatList
-          data={containerData.compartments}
-          renderItem={({ item: compartment }) => (
+          <FlatList
+            data={containerData.compartments}
+            renderItem={({ item: compartment }) => (
               <Compartment
                 compartmentData={compartment}
                 viewedContainerExpand={viewedContainerExpand}
                 setUserStorage={setUserStorage}
               />
-            
-          )}
-        />
+            )}
+          />
         </ExpandView>
       )}
     </View>
