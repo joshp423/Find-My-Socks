@@ -7,9 +7,6 @@ import {
   createNativeStackNavigator,
   createNativeStackScreen,
 } from "@react-navigation/native-stack";
-import { Image } from "react-native";
-import bell from "../assets/bell.png";
-import newspaper from "../assets/newspaper.png";
 import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
 import { Storage } from "./screens/Storage";

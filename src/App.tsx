@@ -7,11 +7,6 @@ import { useColorScheme } from "react-native";
 import { Navigation } from "./navigation";
 import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
 
-Asset.loadAsync([
-  ...NavigationAssets,
-  require("./assets/newspaper.png"),
-  require("./assets/bell.png"),
-]);
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,8 +14,6 @@ const linking = {
   enabled: "auto" as const,
   prefixes: [createURL("/")],
 };
-
-//https://coolors.co/d6f9dd-abdf75-60695c-c5d6d8
 
 export function App() {
   const colorScheme = useColorScheme();
